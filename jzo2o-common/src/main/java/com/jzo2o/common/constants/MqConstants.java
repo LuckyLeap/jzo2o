@@ -2,9 +2,6 @@ package com.jzo2o.common.constants;
 
 /**
  * 静态变量
- *
- * @author zzj
- * @version 1.0
  */
 public interface MqConstants {
     /**

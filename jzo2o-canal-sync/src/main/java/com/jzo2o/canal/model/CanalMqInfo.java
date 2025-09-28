@@ -7,12 +7,8 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
-/**
- * @author itcast
- */
 @Data
 public class CanalMqInfo implements Serializable {
-
     private String database;
     private String table;
     private Boolean isDd1;

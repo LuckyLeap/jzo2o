@@ -28,9 +28,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-/**
- * @author itcast
- */
 @Configuration
 @Slf4j
 @EnableConfigurationProperties(RedisProperties.class)
@@ -52,11 +49,9 @@ public class RedisConfiguration {
         OBJECT_MAPPER.registerModule(timeModule);
     }
 
-
     @Bean("redisTemplate")
     @Primary
     public RedisTemplate<String, Object> restTemplate(RedisConnectionFactory redisConnnectionFactory) {
-
         RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
         log.info("redisTemplate hashCode : {}", redisTemplate.hashCode());
         redisTemplate.setConnectionFactory(redisConnnectionFactory);

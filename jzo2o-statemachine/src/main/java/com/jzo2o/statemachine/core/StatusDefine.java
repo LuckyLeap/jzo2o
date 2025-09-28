@@ -2,11 +2,8 @@ package com.jzo2o.statemachine.core;
 
 /**
  * 状态抽象接口
- *
- * @author itcast
  */
 public interface StatusDefine {
-
     /**
      * @return 返回状态编号
      */

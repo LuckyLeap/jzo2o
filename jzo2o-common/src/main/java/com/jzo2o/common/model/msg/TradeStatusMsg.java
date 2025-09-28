@@ -8,15 +8,12 @@ import lombok.experimental.SuperBuilder;
 
 /**
  * 交易状态消息
- *
- * @author itcast
  */
 @Data
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
 public class TradeStatusMsg {
-
     /**
      * 交易单号
      */

@@ -40,7 +40,6 @@ public class PageResult<T> {
     @ApiModelProperty(value = "数据列表", required = true)
     private List<T> list = Collections.EMPTY_LIST;
 
-
     /**
      * 返回一个分页对象实例
      *
@@ -49,7 +48,6 @@ public class PageResult<T> {
     public static <T> PageResult<T> getInstance() {
         return PageResult.<T>builder().build();
     }
-
 
     /**
      * 对items进行类型转换
@@ -95,25 +93,21 @@ public class PageResult<T> {
 
     /**
      * List{@link List}封装为分页数据对象
-     *
      * @param list  item数据
      * @param pages 页尺寸,可不传,数据不为空时默认为1
      * @param total 总条数
      * @return 目标分页数据对象
      */
     public static <T> PageResult<T> of(List<T> list, Integer pageSize, Long pages, Long total) {
-        PageResult pageResult = PageResult.<T>builder().pages(Optional.ofNullable(pages).orElse(0L))
+        PageResult<T> pageResult = PageResult.<T>builder().pages(Optional.ofNullable(pages).orElse(0L))
                 .total(Optional.ofNullable(total).orElse(0L)).build();
 
-
         if (CollUtil.isEmpty(list)) {
-            pageResult.setList(new ArrayList());
+            pageResult.setList(new ArrayList<>());
             return pageResult;
         }
 
         pageResult.setList(list);
         return pageResult;
     }
-
-
 }

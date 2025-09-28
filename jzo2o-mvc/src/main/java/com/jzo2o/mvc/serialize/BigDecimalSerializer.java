@@ -13,8 +13,7 @@ public class BigDecimalSerializer extends JsonSerializer {
 
     @Override
     public void serialize(Object o, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException {
-        if (o != null && o instanceof BigDecimal) {
-            BigDecimal bigDecomal = (BigDecimal) o;
+        if (o instanceof BigDecimal bigDecomal) {
             jsonGenerator.writeString(bigDecomal.setScale(2, RoundingMode.DOWN).toString());
         }
     }

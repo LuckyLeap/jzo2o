@@ -7,9 +7,6 @@ import java.io.Serializable;
 
 /**
  * swagger配置属性
- *
- * @Author itheima
- * @Date 2023/04/06 17:25
  */
 @Data
 @ConfigurationProperties(prefix = "swagger")

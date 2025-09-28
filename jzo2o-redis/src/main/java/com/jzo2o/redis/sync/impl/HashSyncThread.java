@@ -37,30 +37,24 @@ public class HashSyncThread extends AbstractSyncThread<Object> {
 
     @Override
     protected List<SyncMessage<Object>> getData() {
-        Cursor<Map.Entry<String, Object>> cursor = null;
         // 通过scan从redis hash数据中批量获取数据，获取完数据需要手动关闭游标
         ScanOptions scanOptions = ScanOptions.scanOptions()
                 .count(perCount)
                 .build();
-        try {
-            // sscan获取数据
-            cursor = redisTemplate.opsForHash().scan(RedisSyncQueueUtils.getQueueRedisKey(getQueueName(), getIndex()), scanOptions);
+        try (
+                // sscan获取数据
+                Cursor<Map.Entry<String, Object>> cursor = redisTemplate.opsForHash().scan(RedisSyncQueueUtils.getQueueRedisKey(getQueueName(), getIndex()), scanOptions)) {
             // 遍历数据转换成SyncMessage列表
             return cursor.stream()
                     .map(entry -> SyncMessage
                             .builder()
-                            .key(entry.getKey().toString())
+                            .key(entry.getKey())
                             .value(entry.getValue())
                             .build())
                     .collect(Collectors.toList());
-        }catch (Exception e){
+        } catch (Exception e) {
             log.error("同步处理异常，e:", e);
             throw new RuntimeException(e);
-        } finally {
-            // 关闭游标
-            if (cursor != null) {
-                cursor.close();
-            }
         }
     }
 
@@ -77,7 +71,7 @@ public class HashSyncThread extends AbstractSyncThread<Object> {
         // 单条执行模式
         if (mode == RedisSyncQueueConstants.MODE_SINGLE) {
             //逐条执行
-            data.stream().forEach(objectSyncMessage -> {
+            data.forEach(objectSyncMessage -> {
                 try {
                     // 执行单条数据
                     syncProcessHandler.singleProcess(objectSyncMessage);

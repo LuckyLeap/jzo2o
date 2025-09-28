@@ -7,14 +7,12 @@ import org.springframework.amqp.core.MessagePostProcessor;
 
 /**
  * 延迟消息处理器
- *
- * @author itcast
  */
 public class DelayMessagePostProcessor implements MessagePostProcessor {
 
     // 延迟队列默认延迟5s
     private static final int DEFAULT_DELAY = 5;
-    private Integer delay;
+    private final Integer delay;
 
     public DelayMessagePostProcessor(Integer delay) {
         this.delay = delay;

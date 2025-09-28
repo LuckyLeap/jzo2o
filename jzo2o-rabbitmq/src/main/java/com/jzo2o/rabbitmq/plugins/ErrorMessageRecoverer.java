@@ -6,12 +6,10 @@ import com.jzo2o.rabbitmq.properties.RabbitmqProperties;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.retry.MessageRecoverer;
 
-
 public class ErrorMessageRecoverer implements MessageRecoverer {
 
-    private RabbitClient rabbitClient;
-    private RabbitmqProperties rabbitmqProperties;
-
+    private final RabbitClient rabbitClient;
+    private final RabbitmqProperties rabbitmqProperties;
 
     public ErrorMessageRecoverer(RabbitClient rabbitClient, RabbitmqProperties rabbitmqProperties) {
         this.rabbitClient = rabbitClient;
@@ -20,7 +18,6 @@ public class ErrorMessageRecoverer implements MessageRecoverer {
 
     @Override
     public void recover(Message message, Throwable cause) {
-
         // 指定routingKey的消息才能进入队列
         if(rabbitmqProperties.getError().getWhiteList().contains(message.getMessageProperties().getReceivedRoutingKey())) {
             ErrorRabbitMqMessage errorRabbitMqMessage = new ErrorRabbitMqMessage();
@@ -30,5 +27,4 @@ public class ErrorMessageRecoverer implements MessageRecoverer {
             rabbitClient.sendMsg(rabbitmqProperties.getError().getExchange(), rabbitmqProperties.getError().getRoutingKey(), errorRabbitMqMessage);
         }
     }
-
 }

@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
 public class SwaggerTransformServletResponse {
-
     private static final String voidName = String.format("R«%s»", "Void");
     private static final String rName = "R";
     private static final String DEFINITIONS = "definitions";
@@ -19,7 +18,6 @@ public class SwaggerTransformServletResponse {
     private static final String TITLE = "title";
     private static final String ORIGINAL_REF = "originalRef";
     private static final String REF_PREFIX = "#/definitions/";
-
 
     public static byte[] getBody(byte[] bytes) throws IOException {
 
@@ -68,10 +66,8 @@ public class SwaggerTransformServletResponse {
                     // 返回值是void
                     handleVoidSchema(resp200, definitions, voidDefinition, voidSchema);
                 }
-
             }
         }
-
         return jsonObject.toString().getBytes(StandardCharsets.UTF_8);
     }
 

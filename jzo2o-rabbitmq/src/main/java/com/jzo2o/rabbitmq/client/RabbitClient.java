@@ -27,9 +27,6 @@ import javax.annotation.Resource;
 
 /**
  * 消息处理类
- *
- * @author zzj
- * @version 1.0
  */
 @Slf4j
 @Service
@@ -43,21 +40,19 @@ public class RabbitClient {
     @Resource
     private RabbitClient rabbitClient;
 
-
     public void sendMsg(String exchange, String routingKey, Object msg) {
         rabbitClient.sendMsg(exchange, routingKey, msg, null, null, false);
     }
 
     /**
      * 发送消息 重试3次
-     *
      * @param exchange   交换机
      * @param routingKey 路由key
      * @param msg        消息对象，会将对象序列化成json字符串发出
      * @param delay      延迟时间 秒
      * @param msgId      消息id
      * @param isFailMsg  是否是失败消息
-     * @return 是否发送成功
+     *  是否发送成功
      */
     @Retryable(value = MqException.class, maxAttempts = 3, backoff = @Backoff(value = 3000, multiplier = 1.5), recover = "saveFailMag")
     public void sendMsg(String exchange, String routingKey, Object msg, Integer delay, Long msgId, boolean isFailMsg) {
@@ -69,7 +64,6 @@ public class RabbitClient {
         // 1.3.设置默认延迟时间，默认立即发送
         delay = NumberUtils.null2Default(delay, -1);
         log.debug("消息发送！exchange = {}, routingKey = {}, msg = {}, msgId = {}", exchange, routingKey, jsonMsg, msgId);
-
 
         // 1.4.构建回调
         RabbitMqListenableFutureCallback futureCallback = RabbitMqListenableFutureCallback.builder()
@@ -106,7 +100,6 @@ public class RabbitClient {
         }
     }
 
-
     /**
      * @param mqException mq异常消息
      * @param exchange    交换机
@@ -120,6 +113,4 @@ public class RabbitClient {
         //发送消息失败，需要将消息持久化到数据库，通过任务调度的方式处理失败的消息
         failMsgDao.save(mqException.getMqId(), exchange, routingKey, JsonUtils.toJsonStr(msg), delay, DateUtils.getCurrentTime() + 10,  ExceptionUtil.getMessage(mqException));
     }
-
-
 }

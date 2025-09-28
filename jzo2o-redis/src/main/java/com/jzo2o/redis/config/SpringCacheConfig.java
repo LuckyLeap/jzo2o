@@ -30,16 +30,12 @@ import java.util.Random;
 
 /**
  * SpringCache配置
- *
- * @author itcast
- * @create 2023/8/15 10:04
  **/
 @Configuration
 public class SpringCacheConfig {
 
     /**
      * 缓存时间30分钟
-     *
      * @param connectionFactory redis连接工厂
      * @return redis缓存管理器
      */
@@ -58,7 +54,6 @@ public class SpringCacheConfig {
 
     /**
      * 缓存时间1天
-     *
      * @param connectionFactory redis连接工厂
      * @return redis缓存管理器
      */
@@ -79,7 +74,6 @@ public class SpringCacheConfig {
 
     /**
      * 永久缓存
-     *
      * @param connectionFactory redis连接工厂
      * @return redis缓存管理器
      */
@@ -120,5 +114,3 @@ public class SpringCacheConfig {
         JACKSON_SERIALIZER.setObjectMapper(om);
     }
 }
-
-

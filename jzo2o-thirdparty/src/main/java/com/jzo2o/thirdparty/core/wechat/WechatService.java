@@ -1,9 +1,5 @@
 package com.jzo2o.thirdparty.core.wechat;
 
-
-/**
- * @author itcast
- */
 public interface WechatService {
     /**
      * 获取openid

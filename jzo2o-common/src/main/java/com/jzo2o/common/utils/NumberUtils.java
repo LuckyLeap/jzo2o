@@ -3,13 +3,12 @@ package com.jzo2o.common.utils;
 import cn.hutool.core.util.NumberUtil;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class NumberUtils extends NumberUtil {
-
-
     /**
      * 如果number为空，将number转换为0，否则原数字返回
      *
@@ -32,9 +31,6 @@ public class NumberUtils extends NumberUtil {
 
     /**
      * 如果是空值，返回默认数据；如果有值直接返回
-     * @param number
-     * @param defaultNumber
-     * @return
      */
     public static double null2Default(Double number, double defaultNumber) {
         return number == null ? defaultNumber : number;
@@ -42,7 +38,6 @@ public class NumberUtils extends NumberUtil {
 
     /**
      * 如果number为空，将number转换为0L，否则原数字返回
-     *
      * @param number  原数值
      * @return 长整型数字，0L或原数字
      */
@@ -50,10 +45,9 @@ public class NumberUtils extends NumberUtil {
         return number == null ? 0L : number;
     }
 
-
     public static Double setScale(Double number) {
         return new BigDecimal(number)
-                .setScale(2, BigDecimal.ROUND_HALF_UP)
+                .setScale(2, RoundingMode.HALF_UP)
                 .doubleValue();
     }
     /**
@@ -106,7 +100,6 @@ public class NumberUtils extends NumberUtil {
         }
         return data.stream()
                 .collect(Collectors.averagingDouble(Double::doubleValue));
-
     }
 
     public static Integer toInt(Object obj) {
@@ -128,7 +121,6 @@ public class NumberUtils extends NumberUtil {
 
     /**
      * 数字格式化字符串，不足位数补0
-     *
      * @param originNumber 原始数字
      * @param digit 数字位数
      * @return 字符串

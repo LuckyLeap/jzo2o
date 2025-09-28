@@ -56,7 +56,9 @@ public class HashCacheClearAspect {
             // 2.2.2.获取入参
             List<Object> dataTypeParams = AspectUtils.parseList(hashCacheClear.keyHandlerParamNames(), method, args);
             // 2.2.3.获取dataType
-            key = hashCacheKeyHandler.key(dataTypeParams);
+            if (hashCacheKeyHandler != null) {
+                key = hashCacheKeyHandler.key(dataTypeParams);
+            }
         }
 
         // 3.执行业务逻辑
@@ -82,13 +84,11 @@ public class HashCacheClearAspect {
         return executeResult;
     }
 
-
     private <T> T getBean(String beanName, Class<T> clazz) {
         if (StringUtils.isEmpty(beanName)) {
             return null;
         }
         return SpringUtil.getBean(beanName, clazz);
     }
-
 
 }

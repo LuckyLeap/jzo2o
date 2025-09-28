@@ -67,24 +67,18 @@ public class SyncManagerImpl implements SyncManager {
 
     /**
      * 获取线程对象
-     *
      * @param queueName   队列名称
      * @param index       队列序号
      * @param storageType 存储结构 1：redis hash数据结构，2：redis list数据结构，3：redis zSet结构
      * @param mode 1 单条处理，2 批量处理
-     * @return
      */
     private SyncThread getSyncThread(String queueName, int index, Integer storageType, int mode) {
-        switch (storageType) {//目前组件支付同步Redis Hash结构的数据
-            case STORAGE_TYPE_HASH:
-                return new HashSyncThread(redissonClient, queueName, index, redisTemplate, redisSyncProperties.getPerCount(), mode);
-            case STORAGE_TYPE_LIST:
-                return null;
-            case STORAGE_TYPE_ZSET:
-                return null;
-        }
-        return null;
+        return switch (storageType) {//目前组件支付同步Redis Hash结构的数据
+            case STORAGE_TYPE_HASH ->
+                    new HashSyncThread(redissonClient, queueName, index, redisTemplate, redisSyncProperties.getPerCount(), mode);
+            case STORAGE_TYPE_LIST -> null;
+            case STORAGE_TYPE_ZSET -> null;
+            default -> null;
+        };
     }
-
-
 }

@@ -6,18 +6,12 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import java.util.concurrent.TimeUnit;
 
-
 /**
- * @author Mr.M
- * @version 1.0
- * @description 分布式锁工具类
- * @date 2023/7/23 22:48
+ * 分布式锁工具类
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
 public @interface Lock {
-
-
     /**
      * 加锁key的表达式，支持表达式
      */
@@ -52,5 +46,4 @@ public @interface Lock {
      * 是否启用自动续期,如果使用自动续期则unlock必须设置为true
      */
     boolean startDog() default false;
-
 }

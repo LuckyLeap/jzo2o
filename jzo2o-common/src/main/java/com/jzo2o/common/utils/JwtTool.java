@@ -5,6 +5,7 @@ import cn.hutool.jwt.JWT;
 import com.jzo2o.common.model.CurrentUserInfo;
 
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.Base64;
 import java.util.Date;
@@ -15,7 +16,7 @@ public class JwtTool {
     private static final String PAYLOAD_USER_KEY = "user";
     private static final String UserType = "userType";
 
-    private byte[] key;
+    private final byte[] key;
 
     public JwtTool(String keyStr) {
         key = keyStr.getBytes();
@@ -23,7 +24,6 @@ public class JwtTool {
 
     /**
      * 创建 jwttoken
-     *
      * @param currentUserId 用户id
      * @param name          用户姓名/昵称
      * @param avatar        用户头像
@@ -36,14 +36,13 @@ public class JwtTool {
         return JWT.create()
                 .setPayload(PAYLOAD_USER_KEY, new CurrentUserInfo(currentUserId, encodeName, avatar, userType))
                 .setExpiresAt(new Date(System.currentTimeMillis() + JWT_TOKEN_TTL.toMillis()))
-                .setCharset(Charset.forName("UTF-8"))
+                .setCharset(StandardCharsets.UTF_8)
                 .setKey(key)
                 .sign();
     }
 
     /**
      * 从访问token中获取用户信息
-     *
      * @param token 访问token
      * @return 用户信息
      */
@@ -63,10 +62,8 @@ public class JwtTool {
         }
     }
 
-
     /**
      * 从token中获取服务获取用户类型
-     *
      * @param token 访问token
      * @return 用户类型
      */
@@ -81,5 +78,4 @@ public class JwtTool {
         JSON user = json.getByPath(PAYLOAD_USER_KEY, JSON.class);
         return user.getByPath(UserType, Integer.class);
     }
-
 }

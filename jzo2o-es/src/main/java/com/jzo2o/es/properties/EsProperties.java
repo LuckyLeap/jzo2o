@@ -12,6 +12,7 @@ public class EsProperties {
      * es host
      */
     private String host;
+
     /**
      * es 端口
      */

@@ -51,7 +51,6 @@ public class FailMsgDaoImpl implements FailMsgDao {
         }
     }
 
-
     @Override
     public void save(Long id, String exchange, String routingKey, Object msg, Integer delay, Integer nextFetchTime, String failMessage) {
         //更新下次执行时间
@@ -66,7 +65,6 @@ public class FailMsgDaoImpl implements FailMsgDao {
 
         failMsgMapper.insert(failMsg);
     }
-
 
     @Override
     public List<FailMsg> fetch(Integer limit) {

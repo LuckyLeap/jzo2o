@@ -13,14 +13,11 @@ import java.util.stream.Collectors;
 
 /**
  * 继承自 hutool 的BeanUtil，增加了bean转换时自定义转换器的功能
- *
- * @author itcast
  */
 public class BeanUtils extends BeanUtil {
 
     /**
      * 将原对象转换成目标对象，对于字段不匹配的字段可以使用转换器处理
-     *
      * @param source         原对象
      * @param clazz          目标对象的class
      * @param convertHandler 转换器
@@ -38,11 +35,9 @@ public class BeanUtils extends BeanUtil {
 
     /**
      * 复制set集合中的属性到目标对象中
-     *
      * @param originSet 原始对象集合
      * @param targetType 目标对象类型
      * @param convertHandler 目标对象数据转换器
-     * @return
      * @param <O> 原始对象类型
      * @param <T> 目标对象类型
      */
@@ -58,7 +53,7 @@ public class BeanUtils extends BeanUtil {
      *
      * @param originSet 原始对象集合
      * @param targetType 目标对象类型
-     * @return
+     *
      * @param <O> 原始对象类型
      * @param <T> 目标对象类型
      */
@@ -68,7 +63,6 @@ public class BeanUtils extends BeanUtil {
 
     /**
      * 复制集合中的Bean属性
-     *
      * @param originList     原Bean集合
      * @param targetType     目标Bean类型
      * @param convertHandler 特殊对象类型转换器，可传null，即不进行特殊处理
@@ -87,7 +81,6 @@ public class BeanUtils extends BeanUtil {
 
     /**
      * 将原对象转换成目标对象，对于字段不匹配的字段可以使用转换器处理
-     *
      * @param source 原对象
      * @param clazz  目标对象的class
      * @param <R>    原对象类型
@@ -103,7 +96,6 @@ public class BeanUtils extends BeanUtil {
 
     /**
      * 将列表转换另一种类型的列表
-     *
      * @param originList  原列表
      * @param targetClass 目标类型class
      * @param <R>         原列表元素类型
@@ -120,7 +112,7 @@ public class BeanUtils extends BeanUtil {
 
     @Deprecated
     public static <O, T> List<T> copyList(List<O> list, Class<T> clazz, ConvertHandler<O, T> convertHandler) {
-        if (list == null || list.size() == 0) {
+        if (list == null || list.isEmpty()) {
             return CollUtils.emptyList();
         }
         return list.stream().map(r -> copyBean(r, clazz, convertHandler)).collect(Collectors.toList());

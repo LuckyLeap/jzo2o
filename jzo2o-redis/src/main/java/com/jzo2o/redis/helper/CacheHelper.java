@@ -13,9 +13,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-/**
- * @author itcast
- */
 @Component
 public class CacheHelper {
     private static final String CACHE_PREFIX = "CACHE_";
@@ -25,13 +22,6 @@ public class CacheHelper {
 
     /**
      * 缓存实现
-     *
-     * @param key
-     * @param dataExecutor
-     * @param clazz
-     * @param ttl
-     * @param <T>
-     * @return
      */
     public <T> T get(String key, DataExecutor<T> dataExecutor, Class<T> clazz, Long ttl) {
         String redisKey = CACHE_PREFIX + key;
@@ -66,7 +56,6 @@ public class CacheHelper {
 
     /**
      * 批量获取缓存数据，按照id列表顺序返回目标数据,如果缓存不存在则查询数据库
-     *
      * @param dataType               目标数据类型，CACHE_加dataType 为redisKey
      * @param objectIds              目标数据唯一id
      * @param batchDataQueryExecutor 批量目标数据获取执行器用于当缓存数据不存在时查询数据库
@@ -74,7 +63,6 @@ public class CacheHelper {
      * @param ttl                    目标数据整体过期时间(ttl大于0才会设置有效期)
      * @param <K>                    目标数据id数据类型
      * @param <T>                    目标数据类型
-     * @return
      */
     public <K, T> List<T> batchGet(String dataType, List<K> objectIds, BatchDataQueryExecutor<K, T> batchDataQueryExecutor, Class<T> clazz, Long ttl) {
         // 1.缓存获取数据
@@ -118,7 +106,6 @@ public class CacheHelper {
 
     /**
      * 批量获取缓存数据，按照id列表顺序返回目标数据
-     *
      * @param dataType               目标数据类型，例如评价数据
      * @param batchDataQueryExecutor 目标数据获取执行器
      * @param clazz                  目标数据类型class
@@ -158,14 +145,12 @@ public class CacheHelper {
 
     /**
      * 批量获取缓存数据，按照id列表顺序返回目标数据
-     *
      * @param dataType    目标数据类型，例如评价数据
      * @param data        缓存数据
      * @param keyFunction hashKey获取函数
      * @param ttl         目标数据整体过期时间(ttl大于0才会设置有效期)
      * @param <K>         目标数据id数据雷兴国
      * @param <T>         目标数据类型
-     * @return 查询结果
      */
     public <K, T> void doPutAll(String dataType, List<T> data, Function<T, K> keyFunction, Long ttl) {
         //1.构建redisKey
@@ -174,7 +159,7 @@ public class CacheHelper {
             return;
         }
         K apply = keyFunction.apply(data.get(0));
-        Map<K, T> map = data.stream().collect(Collectors.toMap(d -> keyFunction.apply(d), d -> d));
+        Map<K, T> map = data.stream().collect(Collectors.toMap(keyFunction, d -> d));
         //5.存储数据到缓存
         redisTemplate.opsForHash().putAll(redisKey, map);
         if(ttl > 0) {
@@ -189,7 +174,6 @@ public class CacheHelper {
 
     /**
      * 批量删除缓存
-     *
      * @param keys 缓存key列表
      */
     public void batchRemove(List<String> keys) {
@@ -203,7 +187,6 @@ public class CacheHelper {
 
     /**
      * 删除缓存
-     *
      * @param key 缓存key
      */
     public void remove(String key) {
@@ -212,7 +195,6 @@ public class CacheHelper {
 
     /**
      * 分页缓存删除
-     *
      * @param dataType 数据类型
      * @param objectId 对象id
      */
@@ -227,18 +209,14 @@ public class CacheHelper {
 
     /**
      * 数据查询执行器
-     *
      * @param <T>
      */
     public interface BatchDataQueryExecutor<K, T> {
         /**
          * 查询key对应的值
-         *
          * @param objectIds 没有命中的对象id列表
          * @param clazz     数据转换类型
-         * @return
          */
         Map<K, T> execute(List<K> objectIds, Class<T> clazz);
     }
-
 }

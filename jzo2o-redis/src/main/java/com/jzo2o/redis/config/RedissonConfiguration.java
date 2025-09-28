@@ -66,8 +66,7 @@ public class RedissonConfiguration {
                     .setPassword(password);
         }
         // 3.创建Redisson客户端
-        RedissonClient redissonClient = Redisson.create(config);
-        return redissonClient;
+        return Redisson.create(config);
     }
 
     private String[] convert(List<String> nodesObject) {

@@ -17,9 +17,6 @@ import java.util.Map;
 
 /**
  * 高德地图服务
- *
- * @author itcast
- * @create 2023/7/6 18:10
  **/
 @Service
 @ConditionalOnBean(AmapProperties.class)
@@ -39,7 +36,6 @@ public class AmapMapServiceImpl implements MapService {
 
     /**
      * 根据地址获取经纬度坐标
-     *
      * @param address 地址
      * @return 经纬度坐标
      */
@@ -63,7 +59,6 @@ public class AmapMapServiceImpl implements MapService {
 
     /**
      * 根据经纬度获取城市编码
-     *
      * @param location 经纬度，经度在前，纬度在后
      * @return 城市信息
      */

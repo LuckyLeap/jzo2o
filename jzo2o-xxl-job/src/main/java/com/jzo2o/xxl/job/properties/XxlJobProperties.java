@@ -8,7 +8,6 @@ import org.springframework.context.annotation.Configuration;
 @ConfigurationProperties(prefix = "xxl-job")
 @Configuration
 public class XxlJobProperties {
-
     private String accessToken;
     private Admin admin;
     private Executor executor;
@@ -25,6 +24,5 @@ public class XxlJobProperties {
         private Integer port;
         private String logPath;
         private Integer logRetentionDays;
-
     }
 }

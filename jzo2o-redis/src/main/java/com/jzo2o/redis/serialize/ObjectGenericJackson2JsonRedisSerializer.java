@@ -12,6 +12,7 @@ public class ObjectGenericJackson2JsonRedisSerializer extends GenericJackson2Jso
     public ObjectGenericJackson2JsonRedisSerializer(ObjectMapper mapper){
         super(mapper);
     }
+
     @Override
     public byte[] serialize(Object source) throws SerializationException {
         if (Objects.nonNull(source)) {
@@ -21,9 +22,9 @@ public class ObjectGenericJackson2JsonRedisSerializer extends GenericJackson2Jso
         }
         return super.serialize(source);
     }
+
     @Override
     public <T> T deserialize(byte[] source, Class<T> type) throws SerializationException {
         return super.deserialize(source, type);
     }
-
 }

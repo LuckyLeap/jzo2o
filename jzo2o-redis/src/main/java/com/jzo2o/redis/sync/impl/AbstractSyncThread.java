@@ -64,8 +64,6 @@ public abstract class AbstractSyncThread<T> implements SyncThread {
 
     /**
      * 获取数据
-     *
-     * @return
      */
     protected abstract List<SyncMessage<T>> getData();
 
@@ -73,8 +71,6 @@ public abstract class AbstractSyncThread<T> implements SyncThread {
 
     /**
      * 先获取和队列同名的处理器，如果获取不到，获取通类型的处理器
-     *
-     * @return
      */
     protected SyncProcessHandler<T> getSyncProcessHandler() {
         SyncProcessHandler syncProcessHandler = SpringUtil.getBean(queueName, SyncProcessHandler.class);

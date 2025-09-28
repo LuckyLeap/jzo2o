@@ -13,11 +13,6 @@ public class ComparatorUtils {
 
     /**
      * 比较器，可以将空值元素移动到头部
-     *
-     * @param keyExtractor
-     * @param <T>
-     * @param <U>
-     * @return
      */
     public static <T, U extends Comparable<? super U>> Comparator<T> nullToFirstComparing(Function<? super T, ? extends U> keyExtractor) {
         return nullComparing(true, keyExtractor);
@@ -25,11 +20,6 @@ public class ComparatorUtils {
 
     /**
      * 比较器，可以将空值元素移动到尾部
-     *
-     * @param keyExtractor
-     * @param <T>
-     * @param <U>
-     * @return
      */
     public static <T, U extends Comparable<? super U>> Comparator<T> nullToLastComparing(Function<? super T, ? extends U> keyExtractor) {
         return nullComparing(false, keyExtractor);
@@ -37,12 +27,10 @@ public class ComparatorUtils {
 
     /**
      * 比较器，可以处理空值元素，将空值元素移动到头部或尾部
-     *
      * @param nullFirst 空元素是否排到头部
      * @return 比较器
      */
-    public static <T, U extends Comparable<? super U>> Comparator<T> nullComparing(boolean nullFirst,
-                                                                                   Function<? super T, ? extends U> keyExtractor) {
+    public static <T, U extends Comparable<? super U>> Comparator<T> nullComparing(boolean nullFirst, Function<? super T, ? extends U> keyExtractor) {
         Objects.requireNonNull(keyExtractor);
 
         return (Comparator<T> & Serializable)
@@ -61,9 +49,6 @@ public class ComparatorUtils {
 
     /**
      * 判断comparator是否反转过
-     *
-     * @param comparator
-     * @return
      */
     public static boolean isAsc(Comparator<?> comparator) {
         Objects.requireNonNull(comparator);

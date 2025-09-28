@@ -1,6 +1,5 @@
 package com.jzo2o.knife4j.utils;
 
-
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
@@ -14,8 +13,6 @@ import javax.servlet.http.HttpServletResponseWrapper;
 
 /**
  * 重写response返回值
- *
- * @author itcast
  */
 public class ResponseWrapper extends HttpServletResponseWrapper {
     private ByteArrayOutputStream buffer = null;
@@ -64,7 +61,7 @@ public class ResponseWrapper extends HttpServletResponseWrapper {
         return buffer.toString();
     }
 
-    private class WapperedOutputStream extends ServletOutputStream {
+    private static class WapperedOutputStream extends ServletOutputStream {
         private ByteArrayOutputStream bos = null;
 
         public WapperedOutputStream(ByteArrayOutputStream stream) throws IOException {
@@ -93,7 +90,6 @@ public class ResponseWrapper extends HttpServletResponseWrapper {
 
         @Override
         public void setWriteListener(WriteListener writeListener) {
-
         }
     }
 }

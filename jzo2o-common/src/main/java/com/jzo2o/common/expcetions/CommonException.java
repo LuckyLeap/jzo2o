@@ -3,12 +3,11 @@ package com.jzo2o.common.expcetions;
 import cn.hutool.http.HttpStatus;
 import com.jzo2o.common.constants.ErrorInfo;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import static java.net.HttpURLConnection.HTTP_BAD_REQUEST;
 
-/**
- * @author itcast
- */
+@EqualsAndHashCode(callSuper = true)
 @Data
 public class CommonException extends RuntimeException {
     private int code;
@@ -32,5 +31,4 @@ public class CommonException extends RuntimeException {
     public CommonException(String message) {
         this(HttpStatus.HTTP_INTERNAL_ERROR, message);
     }
-
 }

@@ -14,9 +14,6 @@ import java.sql.SQLException;
 import static com.jzo2o.mysql.constants.DbFiledConstants.CREATE_BY;
 import static com.jzo2o.mysql.constants.DbFiledConstants.UPDATE_BY;
 
-/**
- * @author itcast
- */
 public class MyBatisAutoFillInterceptor implements InnerInterceptor {
 
     private final UserInfoHandler userInfoHandler;

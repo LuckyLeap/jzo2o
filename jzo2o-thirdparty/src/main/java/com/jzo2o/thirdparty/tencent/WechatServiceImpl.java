@@ -15,9 +15,6 @@ import org.springframework.stereotype.Service;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * @author itcast
- */
 @Slf4j
 @Service
 @ConditionalOnBean(WechatProperties.class)
@@ -36,7 +33,6 @@ public class WechatServiceImpl implements WechatService {
 
     /**
      * 获取openid
-     *
      * @param code 登录凭证
      * @return 唯一标识
      */
@@ -58,7 +54,6 @@ public class WechatServiceImpl implements WechatService {
 
     /**
      * 获取服务端调用凭证 token
-     *
      * @return token
      */
     public String getToken() {
@@ -75,7 +70,6 @@ public class WechatServiceImpl implements WechatService {
 
     /**
      * 获取手机号
-     *
      * @param code 手机号凭证
      * @return 唯一标识
      */
@@ -101,7 +95,6 @@ public class WechatServiceImpl implements WechatService {
 
     /**
      * 获取应用配置
-     *
      * @return 参数集合
      */
     private Map<String, Object> getAppConfig() {
@@ -112,5 +105,4 @@ public class WechatServiceImpl implements WechatService {
         requestUrlParam.put("secret", wechatProperties.getSecret());
         return requestUrlParam;
     }
-
 }

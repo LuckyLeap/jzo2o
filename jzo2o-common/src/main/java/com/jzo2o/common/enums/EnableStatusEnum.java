@@ -7,8 +7,8 @@ import lombok.Getter;
 @Getter
 public enum EnableStatusEnum {
     UNKNOWAL(-1,"未知"),ENABLE(1,"启用"),DISABLE(0, "禁用");
-    private int status;
-    private String description;
+    private final int status;
+    private final String description;
 
     public boolean equals(Integer status) {
         return this.status == status;

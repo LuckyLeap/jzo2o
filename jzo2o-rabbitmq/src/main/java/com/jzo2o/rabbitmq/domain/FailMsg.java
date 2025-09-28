@@ -5,16 +5,12 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serial;
 import java.time.LocalDateTime;
 import java.io.Serializable;
 
 /**
- * <p>
  * 失败消息
- * </p>
- *
- * @author itcast
- * @since 2023-07-11
  */
 @Data
 @AllArgsConstructor
@@ -22,6 +18,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 public class FailMsg implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     /**
@@ -62,6 +59,4 @@ public class FailMsg implements Serializable {
     private LocalDateTime createTime;
 
     private LocalDateTime updateTime;
-
-
 }

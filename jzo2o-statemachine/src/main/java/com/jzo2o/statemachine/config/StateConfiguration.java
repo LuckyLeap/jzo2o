@@ -6,12 +6,9 @@ import org.springframework.context.annotation.ComponentScan;
 
 /**
  * 状态机配置
- *
- * @author itcast
  **/
 @ComponentScan(value = {"com.jzo2o.statemachine"})
 public class StateConfiguration {
-
     /**
      * 用于状态机持久化的mapper初始化为bean
      */

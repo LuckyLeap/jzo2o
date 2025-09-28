@@ -49,5 +49,4 @@ public class Knife4jConfiguration {
                 .build();
     }
 
-
 }

@@ -12,8 +12,6 @@ import org.springframework.stereotype.Component;
 
 /**
  * 状态机持久化实现
- *
- * @author itcast
  **/
 @Component
 @Primary
@@ -25,7 +23,6 @@ public class StateMachinePersisterImpl implements StateMachinePersister {
 
     /**
      * 构造器
-     *
      * @param stateMachineMapper 状态机数据层处理类
      */
     public StateMachinePersisterImpl(StateMachineMapper stateMachineMapper) {
@@ -34,7 +31,6 @@ public class StateMachinePersisterImpl implements StateMachinePersister {
 
     /**
      * 业务数据状态初始化
-     *
      * @param stateMachineName 状态机名称
      * @param bizId            业务id
      * @param statusDefine     当前状态

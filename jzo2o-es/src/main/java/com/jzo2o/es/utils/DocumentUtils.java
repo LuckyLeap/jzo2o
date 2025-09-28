@@ -12,10 +12,6 @@ public class DocumentUtils {
 
     /**
      * 不可用于集合
-     * @param document
-     * @return
-     * @param <T>
-     * @throws IOException
      */
     public static <T> XContentBuilder convert(T document)  {
 

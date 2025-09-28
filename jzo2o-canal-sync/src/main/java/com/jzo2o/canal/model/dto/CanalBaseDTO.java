@@ -11,14 +11,12 @@ import java.util.Map;
 
 /**
  * canal监听传递参数
- * @author itcast
  */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class CanalBaseDTO implements Serializable {
-
     /**
      * 数据id
      */
@@ -42,5 +40,4 @@ public class CanalBaseDTO implements Serializable {
     private Map<String, Object> fieldMap;
 
     private Long es;
-
 }

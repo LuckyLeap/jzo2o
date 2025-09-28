@@ -1,13 +1,11 @@
 package com.jzo2o.common.expcetions;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
-/**
- * @author itcast
- */
+@EqualsAndHashCode(callSuper = true)
 @Data
 public class MqException extends CommonException{
-
     /**
      * mq失败消息
      */

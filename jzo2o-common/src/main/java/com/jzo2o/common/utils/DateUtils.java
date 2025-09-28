@@ -8,14 +8,9 @@ import java.util.*;
 
 /**
  * 时间工具类,用于本地时间操作,包含LocalDateTimeUtil的所有方法和自定义的LocalDateTime的操作方法及常量
- *
- * @author itheima
- * @version 1.0.0 1.0
- * @see 1.0
  * @since 从哪个版本开始支持该类的功能
  */
 public class DateUtils extends LocalDateTimeUtil {
-
     public static final String DEFAULT_YEAR_FORMAT = "yyyy";
     public static final String DEFAULT_MONTH_FORMAT = "yyyy-MM";
     public static final String DEFAULT_MONTH_FORMAT_SLASH = "yyyy/MM";
@@ -37,7 +32,6 @@ public class DateUtils extends LocalDateTimeUtil {
     public static final long MAX_3_MONTH_DAY = 90L;
     public static final long MAX_YEAR_DAY = 365L;
 
-
     public static final DateTimeFormatter SIGN_DATE_SUFFIX_FORMATTER =
             DateTimeFormatter.ofPattern(":yyyyMM");
     public static final DateTimeFormatter POINTS_BOARD_SUFFIX_FORMATTER =
@@ -47,7 +41,6 @@ public class DateUtils extends LocalDateTimeUtil {
 
     /**
      * 获取utc时间
-     *
      * @param localDateTime 转化时间
      * @return utc时间
      */
@@ -60,7 +53,6 @@ public class DateUtils extends LocalDateTimeUtil {
 
     /**
      * 获取Asia时间
-     *
      * @param localDateTime 转化时间
      * @return Asia时间
      */
@@ -73,7 +65,6 @@ public class DateUtils extends LocalDateTimeUtil {
 
     /**
      * 获取某一天的开始：0点0分
-     *
      * @param localDateTime 指定日期
      * @return 转换后的时间
      */
@@ -86,7 +77,6 @@ public class DateUtils extends LocalDateTimeUtil {
 
     /**
      * 获取某一天的结束：23点 59分 59秒的时间
-     *
      * @param localDateTime 指定日期
      * @return 转换后的时间
      */
@@ -102,7 +92,6 @@ public class DateUtils extends LocalDateTimeUtil {
         c.add(Calendar.DAY_OF_MONTH, i);
         return c.getTime();
     }
-
 
     public static LocalDate getMonthBegin(LocalDate date) {
         return LocalDate.of(date.getYear(), date.getMonth(), 1);
@@ -131,8 +120,6 @@ public class DateUtils extends LocalDateTimeUtil {
 
     /**
      * 获取最近15天日期（不包含当天），格式MM.dd
-     *
-     * @return
      */
     public static List<String> last15Day() {
         // 1.定义日期列表
@@ -153,8 +140,6 @@ public class DateUtils extends LocalDateTimeUtil {
 
     /**
      * 获取当前时间s
-     *
-     * @return
      */
     public static int getCurrentTime() {
         return (int) (System.currentTimeMillis() / 1000);
@@ -174,10 +159,8 @@ public class DateUtils extends LocalDateTimeUtil {
 
     /**
      * 获取数字格式的日志
-     *
      * @param localDateTime 日期
      * @param format 格式模板，只支持纯数字模板
-     * @return
      */
     public static Long getFormatDate(LocalDateTime localDateTime, String format) {
         String date = format(localDateTime, format);
@@ -186,10 +169,8 @@ public class DateUtils extends LocalDateTimeUtil {
 
     /**
      * 获取数字格式的日志
-     *
      * @param localDateTime 日期
      * @param format 格式模板，只支持纯数字模板
-     * @return
      */
     public static Integer getIntFormatDate(LocalDateTime localDateTime, String format) {
         String date = format(localDateTime, format);
@@ -198,8 +179,6 @@ public class DateUtils extends LocalDateTimeUtil {
 
     /**
      * 获取最小的一个时间
-     * @param localDateTimes
-     * @return
      */
     public static LocalDateTime getMin(LocalDateTime... localDateTimes) {
         if(localDateTimes == null || localDateTimes.length <= 0) {
@@ -222,5 +201,4 @@ public class DateUtils extends LocalDateTimeUtil {
         List<LocalDateTime> localDateTimeList = Arrays.asList(localDateTimes);
         return localDateTimeList.stream().sorted(Comparator.reverseOrder()).findFirst().orElse(null);
     }
-
 }

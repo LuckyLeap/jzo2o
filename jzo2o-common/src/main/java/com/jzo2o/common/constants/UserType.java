@@ -1,7 +1,6 @@
 package com.jzo2o.common.constants;
 
 public class UserType {
-
     /**
      * c端用户
      */

@@ -8,9 +8,6 @@ public class LocationUtils {
 
     /**
      * 反转经纬度
-     *
-     * @param location
-     * @return
      */
     public static String reversLatLon(String location) {
         return reversLatLon(location, ",");
@@ -18,9 +15,6 @@ public class LocationUtils {
 
     /**
      * 反转经纬度
-     *
-     * @param location
-     * @return
      */
     public static String reversLatLon(String location, String symbol) {
         if (StringUtils.isEmpty(location) || StringUtils.isEmpty(symbol)) {
@@ -35,10 +29,6 @@ public class LocationUtils {
 
     /**
      * 数字经纬度返回字符串经纬度
-     *
-     * @param lon
-     * @param lat
-     * @return
      */
     public static String getLocation(Double lon, Double lat) {
         if (lon == null || lat == null) {
@@ -46,5 +36,4 @@ public class LocationUtils {
         }
         return String.format("%s,%s", lon, lat);
     }
-
 }

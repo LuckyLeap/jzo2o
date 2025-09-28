@@ -7,14 +7,11 @@ import java.util.Map;
 
 /**
  * 断言工具类，符合条件不会抛出异常，不符合条件则会抛出异常
- *
- * @author itheima
  */
 public class AssertUtils {
     /**
      * 两个对象相同，不同则会抛出异常
-     *
-     * @param obj1    duixiang1
+     * @param obj1    对象1
      * @param obj2    对象2
      * @param message 异常信息
      */
@@ -33,7 +30,6 @@ public class AssertUtils {
 
     /**
      * 判断对象不为null，为null抛出异常
-     *
      * @param obj     判断对象
      * @param message 异常信息
      */
@@ -45,7 +41,6 @@ public class AssertUtils {
 
     /**
      * 判断字符串不为空，为空抛出异常
-     *
      * @param str     判空字符串
      * @param message 异常信息
      */
@@ -57,7 +52,6 @@ public class AssertUtils {
 
     /**
      * 判断boolean对象是否为真，为真不抛出异常
-     *
      * @param boo     boolean对象
      * @param message 异常信息
      */
@@ -69,7 +63,6 @@ public class AssertUtils {
 
     /**
      * 判断集合是否不为空，为空抛出异常
-     *
      * @param coll    判空集合对象
      * @param message 异常信息
      */
@@ -81,7 +74,6 @@ public class AssertUtils {
 
     /**
      * 判断map是否不为空，为空抛出异常
-     *
      * @param map     判不为空map
      * @param message 异常信息
      */
@@ -91,10 +83,8 @@ public class AssertUtils {
         }
     }
 
-
     /**
      * 判断boolean对象是否为假，为假则不抛出异常
-     *
      * @param boo     boolean对象
      * @param message 异常信息
      */
@@ -106,7 +96,6 @@ public class AssertUtils {
 
     /**
      * 判断一个值是否是指定值中的一个，没有匹配到抛出异常信息
-     *
      * @param t 需要比较的数据
      * @param message 抛出异常信息
      * @param targets 比较集合
@@ -124,7 +113,6 @@ public class AssertUtils {
 
     /**
      * 判断一个值是否是指定值不被包含在集合中，没有匹配到抛出异常信息
-     *
      * @param t 需要比较的数据
      * @param message 抛出异常信息
      * @param targets 比较集合中
@@ -137,11 +125,10 @@ public class AssertUtils {
                 handleException(message);
             }
         }
-
     }
+
     /**
      * 异常信息处理
-     *
      * @param message 异常信息
      */
     private static void handleException(String... message) {
@@ -151,6 +138,4 @@ public class AssertUtils {
         }
         throw new BadRequestException(msg);
     }
-
-
 }

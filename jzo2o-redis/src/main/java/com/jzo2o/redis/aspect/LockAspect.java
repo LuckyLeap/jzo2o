@@ -14,10 +14,7 @@ import org.redisson.api.RedissonClient;
 import java.lang.reflect.Method;
 
 /**
- * @author Mr.M
- * @version 1.0
- * @description 分布式锁工具类
- * @date 2023/7/23 22:56
+ * 分布式锁工具类
  */
 @Aspect
 public class LockAspect {
@@ -46,17 +43,17 @@ public class LockAspect {
         //加锁时长
         long time = lock.time();
         //启动看门狗自动续期
-        if(lock.startDog()){
+        if (lock.startDog()) {
             time = -1;
             //如果设置自动续期必须在方法执行后释放锁
-            if(!lock.unlock()){
+            if (!lock.unlock()) {
                 throw new BadRequestException(ErrorInfo.Msg.REQUEST_PARAM_ILLEGAL);
             }
         }
         //得到锁对象
         RLock rLock = redissonClient.getLock(redisKey);
         //尝试加锁
-        boolean success = rLock.tryLock(waitTime,time, lock.unit());
+        boolean success = rLock.tryLock(waitTime, time, lock.unit());
         if (!success && !lock.block()) {
             //未阻塞要求的情况下未得到锁
             throw new BadRequestException(ErrorInfo.Msg.REQUEST_OPERATE_FREQUENTLY);
@@ -73,7 +70,5 @@ public class LockAspect {
                 rLock.unlock();
             }
         }
-
     }
-
 }

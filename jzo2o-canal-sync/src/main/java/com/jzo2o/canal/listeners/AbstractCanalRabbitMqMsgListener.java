@@ -14,15 +14,14 @@ import org.springframework.amqp.core.Message;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 public abstract class AbstractCanalRabbitMqMsgListener<T> implements CanalDataHandler<T> {
-
     public void parseMsg(Message message) throws Exception {
-
         try {
             // 1.数据格式转换
             CanalMqInfo canalMqInfo = JsonUtils.toBean(new String(message.getBody()), CanalMqInfo.class);
@@ -47,8 +46,6 @@ public abstract class AbstractCanalRabbitMqMsgListener<T> implements CanalDataHa
 
     /**
      * 单条数据处理
-     *
-     * @param canalMqInfo
      */
     private void singleHandle(CanalMqInfo canalMqInfo) {
         // 1.数据转换
@@ -64,15 +61,14 @@ public abstract class AbstractCanalRabbitMqMsgListener<T> implements CanalDataHa
         }
         if (canalBaseDTO.getIsSave()) {
             T t1 = JsonUtils.toBean(JsonUtils.toJsonStr(canalBaseDTO.getFieldMap()), messageType);
-            List<T> ts = Arrays.asList(t1);
+            List<T> ts = Collections.singletonList(t1);
             batchSave(ts);
         } else {
             Long id = canalBaseDTO.getId();
-            List<Long> ids = Arrays.asList(id);
+            List<Long> ids = Collections.singletonList(id);
             batchDelete(ids);
         }
     }
-
 
     private void batchHandle(CanalMqInfo canalMqInfo) {
         Class<T> messageType = getMessageType();
@@ -92,13 +88,9 @@ public abstract class AbstractCanalRabbitMqMsgListener<T> implements CanalDataHa
             }).collect(Collectors.toList());
             batchSave(collect);
         }else{
-            List<Long> ids = canalMqInfo.getData().stream().map(fieldMap -> {
-                return parseId(fieldMap);
-            }).collect(Collectors.toList());
-
+            List<Long> ids = canalMqInfo.getData().stream().map(this::parseId).collect(Collectors.toList());
             batchDelete(ids);
         }
-
     }
 
     private Long parseId(Map<String, Object> fieldMap) {
@@ -108,24 +100,18 @@ public abstract class AbstractCanalRabbitMqMsgListener<T> implements CanalDataHa
 
     /**
      * 批量保存
-     *
-     * @param data
      */
     public abstract void batchSave(List<T> data);
 
     /**
      * 批量删除
-     *
-     * @param ids
      */
     public abstract void batchDelete(List<Long> ids);
-
 
     //获取泛型参数
     public Class<T> getMessageType() {
         Type superClass = getClass().getGenericSuperclass();
-        if (superClass instanceof ParameterizedType) {
-            ParameterizedType parameterizedType = (ParameterizedType) superClass;
+        if (superClass instanceof ParameterizedType parameterizedType) {
             Type[] typeArgs = parameterizedType.getActualTypeArguments();
             if (typeArgs.length > 0 && typeArgs[0] instanceof Class) {
                 return (Class<T>) typeArgs[0];

@@ -29,16 +29,12 @@ import org.springframework.context.annotation.Primary;
 import javax.annotation.Resource;
 import java.nio.charset.Charset;
 
-/**
- * @author itcast
- */
 @Configuration
 @ConditionalOnProperty(prefix = "rabbit-mq", name = "enable", havingValue = "true")
 @Import({RabbitClient.class, FailMsgDaoImpl.class})
 @EnableConfigurationProperties({RabbitmqProperties.class})
 @Slf4j
 public class RabbitMqConfiguration implements ApplicationContextAware {
-
 
     /**
      * 并发数量
@@ -91,8 +87,6 @@ public class RabbitMqConfiguration implements ApplicationContextAware {
         return factory;
     }
 
-
-
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         // 获取RabbitTemplate
@@ -120,5 +114,4 @@ public class RabbitMqConfiguration implements ApplicationContextAware {
                 }
         );
     }
-
 }

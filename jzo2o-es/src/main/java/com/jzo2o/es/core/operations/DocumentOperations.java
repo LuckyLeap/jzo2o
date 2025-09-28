@@ -10,14 +10,10 @@ import co.elastic.clients.util.ObjectBuilder;
 import java.util.List;
 import java.util.function.Function;
 
-/**
- * @author itcast
- */
 public interface DocumentOperations {
 
     /**
      * 新增文档
-     *
      * @param index    文档所属索引
      * @param document 文档
      * @param <T>      document类型
@@ -35,10 +31,6 @@ public interface DocumentOperations {
 
     /**
      * 批量删除
-     * @param index
-     * @param ids
-     * @return
-     * @param <ID>
      */
     <ID> Boolean batchDelete(String index, List<ID> ids);
 
@@ -50,26 +42,12 @@ public interface DocumentOperations {
 
     /**
      * 还未写完 todo
-     * @param pageQueryDTO
-     * @param targetClass
-     * @return
-     * @param <T>
      */
 
     <T> PageResult<T> findForPage(PageQueryDTO pageQueryDTO, Class<T> targetClass);
 
     /**
      * 根据条件使用经纬度范围检索，先经过条件筛选，然后距离查询
-     * @param index
-     * @param searchBuilder
-     * @param location
-     * @param locationName
-     * @param distance
-     * @param sortBy
-     * @param isAsc
-     * @param size
-     * @return
-     * @param <T>
      */
     <T> List<T> searchByWithGeo(String index,
                                 SearchRequest.Builder searchBuilder,

@@ -43,7 +43,6 @@ public class CollUtils extends CollectionUtil {
 
     /**
      * 以 conjunction 为分隔符将集合转换为字符串 如果集合元素为数组、Iterable或Iterator，则递归组合其为字符串
-     *
      * @param collection  集合
      * @param conjunction 分隔符
      * @param <T>         集合元素类型
@@ -74,11 +73,11 @@ public class CollUtils extends CollectionUtil {
 
     /**
      * 将元素加入到集合中，为null的过滤掉
-     *
      * @param list 集合
      * @param data 要添加的数据
      * @param <T>  元素类型
      */
+    @SafeVarargs
     public static <T> void add(Collection<T> list, T... data) {
         if (list == null || ArrayUtils.isEmpty(data)) {
             return;
@@ -98,8 +97,7 @@ public class CollUtils extends CollectionUtil {
             return map1;
         }
         for (Map.Entry<Long, Integer> entry : map1.entrySet()) {
-            Integer num = map2.get(entry.getKey());
-            map2.put(entry.getKey(), NumberUtils.null2Zero(num) + entry.getValue());
+            map2.compute(entry.getKey(), (k, num) -> NumberUtils.null2Zero(num) + entry.getValue());
         }
         return map2;
     }
@@ -131,9 +129,6 @@ public class CollUtils extends CollectionUtil {
 
     /**
      * 获取数组为空的序号列表
-     *
-     * @param list
-     * @return
      */
     public static List<Integer> getIndexsOfNullData(List<?> list) {
         if (isEmpty(list)) {
@@ -142,7 +137,7 @@ public class CollUtils extends CollectionUtil {
         AtomicInteger counter = new AtomicInteger(0);
         // filter 中的过滤条件不能调换，和表达式的执行顺序有关系
         return list.stream().filter(x -> counter.incrementAndGet() >= 0 && x == null)
-                .map(x -> Integer.valueOf(counter.intValue() - 1))
+                .map(x -> counter.intValue() - 1)
                 .collect(Collectors.toList());
     }
 
@@ -152,18 +147,12 @@ public class CollUtils extends CollectionUtil {
         }
 
         return indexs.stream()
-                .map(index -> list.get(index))
+                .map(list::get)
                 .collect(Collectors.toList());
     }
 
     /**
      * 获取集合中某一列的值集合
-     *
-     * @param list
-     * @param function
-     * @return
-     * @param <T>
-     * @param <R>
      */
     public static <T,R> List<R> getFieldValues(List<T> list, Function<T,R> function) {
         if(isEmpty(list)){
@@ -175,10 +164,6 @@ public class CollUtils extends CollectionUtil {
 
     /**
      * 将两个列表合并出第三个列表
-     * @param list1
-     * @param list2
-     * @return
-     * @param <T>
      */
     public static <T> List<T> union(List<T> list1, List<T> list2) {
         if(isEmpty(list1)) {

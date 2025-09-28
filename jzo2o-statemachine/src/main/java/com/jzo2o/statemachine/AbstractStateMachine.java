@@ -20,12 +20,8 @@ import java.util.concurrent.TimeUnit;
 
 import static java.net.HttpURLConnection.HTTP_INTERNAL_ERROR;
 
-/**
- * @author itcast
- */
 @Slf4j
 public abstract class AbstractStateMachine<T extends StateMachineSnapshot> {
-
     /**
      * 状态机持久化程序
      */
@@ -101,7 +97,6 @@ public abstract class AbstractStateMachine<T extends StateMachineSnapshot> {
     public String start(String bizId, StatusDefine statusDefine) {
         return start(null, bizId, statusDefine, null);
     }
-
 
     /**
      * 启动状态机，并设置当前状态和保存业务快照，快照不分库
@@ -229,7 +224,6 @@ public abstract class AbstractStateMachine<T extends StateMachineSnapshot> {
 
     /**
      * 新增快照
-     *
      * @param dbShardId    分库键
      * @param bizId        业务id
      * @param statusDefine 状态
@@ -248,7 +242,6 @@ public abstract class AbstractStateMachine<T extends StateMachineSnapshot> {
 
     /**
      * 变更状态并保存快照，快照不进行分库
-     *
      * @param bizId                 业务id
      * @param statusChangeEventEnum 状态变换事件
      */
@@ -258,7 +251,6 @@ public abstract class AbstractStateMachine<T extends StateMachineSnapshot> {
 
     /**
      * 变更状态并保存快照，快照不进行分库
-     *
      * @param bizId                 业务id
      * @param statusChangeEventEnum 状态变换事件
      * @param bizSnapshot           业务数据快照（json格式）
@@ -269,7 +261,6 @@ public abstract class AbstractStateMachine<T extends StateMachineSnapshot> {
 
     /**
      * 变更状态并保存快照，快照不进行分库
-     *
      * @param dbShardId             分库键
      * @param bizId                 业务id
      * @param statusChangeEventEnum 状态变换事件
@@ -280,7 +271,6 @@ public abstract class AbstractStateMachine<T extends StateMachineSnapshot> {
 
     /**
      * 变更状态并保存快照，快照分库分表
-     *
      * @param dbShardId             分库键
      * @param bizId                 业务id
      * @param statusChangeEventEnum 状态变换事件
@@ -337,7 +327,6 @@ public abstract class AbstractStateMachine<T extends StateMachineSnapshot> {
 
     /**
      * 构建新的快照数据
-     *
      * @param bizId        业务id
      * @param bizSnapshot  业务快照
      * @param statusDefine 状态
@@ -354,15 +343,12 @@ public abstract class AbstractStateMachine<T extends StateMachineSnapshot> {
         T oldOrderSnapshotDTO = JSONUtil.toBean(currentSnapshot, getSnapshotClass());
 
         //3.将新的订单快照数据覆盖旧订单快照数据，忽略null
-        T orderSnapshotDTO = BeanUtils.copyIgnoreNull(bizSnapshot, oldOrderSnapshotDTO, getSnapshotClass());
-        return orderSnapshotDTO;
+        return BeanUtils.copyIgnoreNull(bizSnapshot, oldOrderSnapshotDTO, getSnapshotClass());
     }
 
     private Class<T> getSnapshotClass() {
-
         ParameterizedType parameterizedType = (ParameterizedType) this.getClass().getGenericSuperclass();
 
         return (Class<T>) parameterizedType.getActualTypeArguments()[0];
-
     }
 }

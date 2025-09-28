@@ -10,9 +10,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 
-/**
- * @author itcast
- */
 @Configuration
 @ConditionalOnClass(RedissonClient.class)
 @Slf4j
@@ -21,9 +18,6 @@ public class LockConfiguration {
 
     /**
      * 实例化分布式锁切面实例
-     *
-     * @param redissonClient
-     * @return
      */
     @Bean
     @ConditionalOnMissingBean

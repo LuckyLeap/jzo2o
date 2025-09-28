@@ -15,4 +15,5 @@ public class ByteUtils extends ByteUtil {
         }
         return new String(content);
     }
+
 }

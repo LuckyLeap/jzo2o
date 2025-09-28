@@ -1,6 +1,5 @@
 package com.jzo2o.es.core.operations;
 
-
 import co.elastic.clients.elasticsearch._types.Result;
 import com.jzo2o.common.expcetions.CommonException;
 import com.jzo2o.common.expcetions.ElasticSearchException;
@@ -43,8 +42,7 @@ public class DefaultDocumentOperations implements DocumentOperations {
         try {
             CreateResponse createResponse = elasticsearchClient.create(builder -> builder.id(getId(document)).document(document).index(index));
             log.debug("create document response : {}", createResponse);
-            boolean success = isSuccess(createResponse);
-            return success;
+            return isSuccess(createResponse);
 
         } catch (IOException e) {
 //            e.printStackTrace();
@@ -64,8 +62,7 @@ public class DefaultDocumentOperations implements DocumentOperations {
         }
         try {
             BulkResponse bulk = elasticsearchClient.bulk(br.build());
-            Boolean success = isSuccess(bulk);
-            return success;
+            return isSuccess(bulk);
         } catch (IOException e) {
             log.error(e.getMessage(),e);
             throw new CommonException(500,e.getMessage());
@@ -99,8 +96,7 @@ public class DefaultDocumentOperations implements DocumentOperations {
         }
         try {
             BulkResponse bulk = elasticsearchClient.bulk(builder.build());
-            Boolean success = isSuccess(bulk);
-            return success;
+            return isSuccess(bulk);
         } catch (IOException e) {
             log.error(e.getMessage(),e);
             throw new CommonException(500,e.getMessage());
@@ -120,9 +116,7 @@ public class DefaultDocumentOperations implements DocumentOperations {
                             .id(id.toString())
                             .doc(document)
                     , document.getClass());
-            Boolean success = isSuccess(response);
-            return success;
-
+            return isSuccess(response);
         } catch (IOException e) {
             log.error(e.getMessage(),e);
             throw new CommonException(500,e.getMessage());
@@ -131,38 +125,31 @@ public class DefaultDocumentOperations implements DocumentOperations {
 
     @Override
     public <ID> Boolean deleteById(String index, ID id) {
-
         try {
             // 2.数据更新
             DeleteResponse response = elasticsearchClient.delete(builder -> builder.id(id.toString()).index(index));
-            Boolean success = isSuccess(response);
-            return success;
+            return isSuccess(response);
         } catch (IOException e) {
             log.error(e.getMessage(),e);
             throw new CommonException(500,e.getMessage());
         }
-
     }
 
     @Override
     public <ID> Boolean batchDelete(String index, List<ID> ids) {
         BulkRequest.Builder builder = new BulkRequest.Builder();
 
-
-        ids.stream().forEach(id ->
+        ids.forEach(id ->
                 builder.operations(b -> b.delete(d -> d.index(index).id(id.toString())))
         );
 
-
         try {
             BulkResponse bulk = elasticsearchClient.bulk(builder.build());
-            Boolean success = isSuccess(bulk);
-            return success;
+            return isSuccess(bulk);
         } catch (Exception e) {
             log.error(e.getMessage(),e);
             throw new CommonException(500,e.getMessage());
         }
-
     }
 
     @Override
@@ -184,11 +171,10 @@ public class DefaultDocumentOperations implements DocumentOperations {
         searchRequestBuild.index(index)
                 .query(builder -> builder.terms(termsQuery));
         try {
-
             SearchResponse<T> searchResponse = elasticsearchClient.search(searchRequestBuild.build(), clazz);
             return searchResponse.hits().hits()
                     .stream()
-                    .map(tHit -> tHit.source())
+                    .map(Hit::source)
                     .collect(Collectors.toList());
         } catch (IOException e) {
             log.error(e.getMessage(),e);
@@ -207,17 +193,15 @@ public class DefaultDocumentOperations implements DocumentOperations {
             searchRequestBuild.fields(fieldAndFormats);
         }
         try {
-
             SearchResponse<T> searchResponse = elasticsearchClient.search(searchRequestBuild.build(), clazz);
             return searchResponse.hits().hits()
                     .stream()
-                    .map(tHit -> tHit.source())
+                    .map(Hit::source)
                     .collect(Collectors.toList());
         } catch (IOException e) {
             log.error(e.getMessage(),e);
             throw new CommonException(500,e.getMessage());
         }
-
     }
 
     @Override
@@ -229,7 +213,6 @@ public class DefaultDocumentOperations implements DocumentOperations {
 
         SearchRequest searchRequest = new SearchRequest.Builder().build();
         try {
-
             SearchResponse<T> search = elasticsearchClient.search(searchRequest, targetClass);
             long total = search.hits().total().value();
             List<T> data = search.hits().hits().stream().map(Hit::source).collect(Collectors.toList());
@@ -271,7 +254,7 @@ public class DefaultDocumentOperations implements DocumentOperations {
 
             return searchResponse.hits().hits()
                     .stream()
-                    .map(tHit -> tHit.source())
+                    .map(Hit::source)
                     .collect(Collectors.toList());
         }catch (IOException e){
             log.error(e.getMessage(),e);
@@ -316,10 +299,6 @@ public class DefaultDocumentOperations implements DocumentOperations {
 
     /**
      * 获取文档id， 如果文档中设置了id，使用文档的id，如果未设置，使用雪花算法生成
-     *
-     * @param document
-     * @param <T>
-     * @return
      */
     private <T> String getId(T document) {
         Object objectId = ReflectUtils.getFieldValue(document, IdUtils.ID);
@@ -328,6 +307,4 @@ public class DefaultDocumentOperations implements DocumentOperations {
         }
         return objectId.toString();
     }
-
-
 }

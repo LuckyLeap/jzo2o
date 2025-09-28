@@ -37,7 +37,4 @@ public class RabbitmqProperties {
         @NestedConfigurationProperty
         private List<String> whiteList = new ArrayList<>();
     }
-
-
-
 }

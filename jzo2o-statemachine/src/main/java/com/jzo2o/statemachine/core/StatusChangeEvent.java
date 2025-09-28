@@ -2,12 +2,8 @@ package com.jzo2o.statemachine.core;
 
 /**
  * 状态变量事件抽象接口
- *
- * @author itcast
  */
-
 public interface StatusChangeEvent {
-
     /**
      * 原始状态
      */
@@ -27,5 +23,4 @@ public interface StatusChangeEvent {
      * @return 返回事件代码
      */
     String getCode();
-
 }

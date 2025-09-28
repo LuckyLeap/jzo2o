@@ -15,19 +15,11 @@ import java.util.List;
 
 /**
  * 分页工具
- *
- * @ClassName PageUtils
- * @Author wusongsong
- * @Date 2022/6/27 17:19
- * @Version
  **/
 public class PageUtils {
 
     /**
      * mybatis的分页数据是否为空
-     *
-     * @param page
-     * @return
      */
     public static boolean isEmpty(Page page) {
         return page == null || CollUtils.isEmpty(page.getRecords());
@@ -35,9 +27,6 @@ public class PageUtils {
 
     /**
      * 判断mybatis的分页数据不为空
-     *
-     * @param page
-     * @return
      */
     public static boolean isNotEmpty(Page page) {
         return page != null && !CollUtils.isEmpty(page.getRecords());
@@ -80,7 +69,6 @@ public class PageUtils {
                 BeanUtils.copyToList(originPage.getRecords(), targetClazz));
     }
 
-
     /**
      * 将前端传来的分页查询条件转换成数据库的查询page,
      * 如果进行排序必须填写targetClazz
@@ -95,7 +83,7 @@ public class PageUtils {
         Page<T> page = new Page<>(pageQueryDTO.getPageNo(), pageQueryDTO.getPageSize());
         //是否排序
         if (targetClazz != null) {
-            List orderItems = getOrderItems(pageQueryDTO, targetClazz);
+            List<OrderItem> orderItems = getOrderItems(pageQueryDTO, targetClazz);
             if (CollUtils.isNotEmpty(orderItems)) {
                 page.addOrder(orderItems);
             }
@@ -135,5 +123,4 @@ public class PageUtils {
     public static Long pages(Long total, Long pageSize) {
         return total % pageSize == 0 ? total / pageSize : total / pageSize + 1;
     }
-
 }

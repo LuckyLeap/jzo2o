@@ -6,14 +6,11 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * 响应工具
- *
- * @author itcast
  */
 public class ResponseUtils {
 
     /**
      * 获取response
-     *
      * @return HttpServletResponse
      */
     public static HttpServletResponse getResponse() {
@@ -23,7 +20,6 @@ public class ResponseUtils {
 
     /**
      * 设置响应header信息
-     *
      * @param key   header key
      * @param value header 值
      */

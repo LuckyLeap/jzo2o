@@ -28,7 +28,6 @@ public class HeaderConstants {
      */
     public static final String EXCEPTION_CATCH_FLAG_2 = "2";
 
-
     /**
      * 请求id
      */

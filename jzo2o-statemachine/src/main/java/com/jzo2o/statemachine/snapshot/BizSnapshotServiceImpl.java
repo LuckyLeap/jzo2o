@@ -11,9 +11,6 @@ import org.springframework.stereotype.Component;
 
 /**
  * 业务数据服务层
- *
- * @author itcast
- * @create 2023/8/18 20:33
  **/
 @Component
 public class BizSnapshotServiceImpl implements BizSnapshotService {
@@ -38,7 +35,6 @@ public class BizSnapshotServiceImpl implements BizSnapshotService {
 
     /**
      * 新增业务快照
-     *
      * @param dbShardId        分库键
      * @param stateMachineName 状态机名称
      * @param bizId            业务id
@@ -64,7 +60,6 @@ public class BizSnapshotServiceImpl implements BizSnapshotService {
 
     /**
      * 根据业务id和状态查询最新业务快照
-     *
      * @param stateMachineName 状态机名称
      * @param bizId            业务id
      * @param state            状态代码

@@ -1,7 +1,6 @@
 package com.jzo2o.mysql.constants;
 
 public interface DbFiledConstants {
-
     /**
      * 数据字段 - ID
      */

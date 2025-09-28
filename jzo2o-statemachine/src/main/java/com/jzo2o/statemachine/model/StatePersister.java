@@ -10,9 +10,6 @@ import java.time.LocalDateTime;
 
 /**
  * 状态持久化
- *
- * @author itcast
- * @create 2023/8/5 15:30
  **/
 @Data
 @Builder

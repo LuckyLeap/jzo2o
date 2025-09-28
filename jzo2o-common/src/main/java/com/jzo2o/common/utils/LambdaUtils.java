@@ -16,4 +16,5 @@ public class LambdaUtils extends LambdaUtil {
         String fieldName = getFieldName(func);
         return StringUtils.isEmpty(fieldName) ? null : StringUtils.toUnderlineCase(fieldName);
     }
+
 }

@@ -6,4 +6,5 @@ package com.jzo2o.common.handler;
 public interface RequestIdHandler {
 
     String getRequestId();
+
 }

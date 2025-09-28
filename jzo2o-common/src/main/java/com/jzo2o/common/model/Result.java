@@ -9,7 +9,6 @@ import java.nio.charset.StandardCharsets;
 
 @Data
 public class Result<T> {
-
     public static final int SUCCESS = 200;
     public static final String OK = "OK";
     public static final int FAILED = 1;

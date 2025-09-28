@@ -3,16 +3,10 @@ package com.jzo2o.common.utils;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 
-/**
- * @author itcast
- */
 public class Base64Utils {
 
     /**
      * 字符串编码
-     *
-     * @param content
-     * @return
      */
     public static byte[] encode(String content) {
         if (null == content) {
@@ -28,6 +22,4 @@ public class Base64Utils {
     public static String decodeStr(String content) {
         return new String(Base64.getDecoder().decode(content.getBytes(StandardCharsets.UTF_8)));
     }
-
-
 }

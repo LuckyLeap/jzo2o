@@ -20,5 +20,4 @@ public class Location {
      * 纬度
      */
     private Double lat;
-
 }

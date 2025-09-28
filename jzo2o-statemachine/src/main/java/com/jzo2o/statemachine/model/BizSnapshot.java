@@ -11,8 +11,6 @@ import java.time.LocalDateTime;
 
 /**
  * 业务数据快照
- *
- * @author itcast
  */
 @Data
 @Builder
@@ -20,7 +18,6 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @TableName("biz_snapshot")
 public class BizSnapshot {
-
     /**
      * 主键
      */

@@ -11,24 +11,18 @@ import java.util.List;
 
 /**
  * 底层使用pageHelper实现的分页查询
- *
  */
 public class PageHelperUtils {
 
     /**
      * 分页查询数据
-     *
-     * @param pageQueryDTO
-     * @param condition
-     * @return
      */
     public static <T> PageResult<T> selectPage(PageQueryDTO pageQueryDTO, QueryExecutor<T> condition) {
-
         PageHelper.startPage(pageQueryDTO.getPageNo().intValue(), pageQueryDTO.getPageSize().intValue(), getOrder(pageQueryDTO));
         List<T> data = condition.query();
         if (data instanceof Page) {
             Page page = (Page) data;
-            return new PageResult<>(page.getPages() * 1L, page.getTotal(), data);
+            return new PageResult<>((long) page.getPages(), page.getTotal(), data);
         }
         long total = CollUtils.size(data);
         long pages = total % pageQueryDTO.getPageSize() == 0 ? total / pageQueryDTO.getPageSize() : total / pageQueryDTO.getPageSize() + 1;
@@ -39,7 +33,7 @@ public class PageHelperUtils {
         if (StringUtils.isEmpty(pageQueryDTO.getOrderBy1()) && StringUtils.isEmpty(pageQueryDTO.getOrderBy2())) {
             return null;
         }
-        StringBuffer buffer = new StringBuffer(" ");
+        StringBuilder buffer = new StringBuilder(" ");
         if (StringUtils.isNotEmpty(pageQueryDTO.getOrderBy1())) {
             buffer.append(StringUtils.toSymbolCase(pageQueryDTO.getOrderBy1(), '_'))
                     .append(pageQueryDTO.getIsAsc1() ? " asc " : " desc ");
@@ -57,7 +51,6 @@ public class PageHelperUtils {
 
     /**
      * 查询执行器
-     *
      * @param <T>
      */
     public interface QueryExecutor<T> {

@@ -22,7 +22,6 @@ public class SearchResponseUtils {
         return getResponse(searchResponse, null);
     }
 
-
     public static <T> List<T> getResponse(SearchResponse<T> searchResponse, Convert<T> convert) {
         if (!isSuccess(searchResponse)) {
             return null;

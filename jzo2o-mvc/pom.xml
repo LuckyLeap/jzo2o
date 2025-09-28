@@ -59,10 +59,10 @@
             <artifactId>aspectjweaver</artifactId>
         </dependency>
 
-<!--        <dependency>-->
-<!--            <groupId>com.jzo2o</groupId>-->
-<!--            <artifactId>jzo2o-api</artifactId>-->
-<!--        </dependency>-->
+        <dependency>
+            <groupId>com.jzo2o</groupId>
+            <artifactId>jzo2o-api</artifactId>
+        </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.datatype</groupId>
             <artifactId>jackson-datatype-jsr310</artifactId>

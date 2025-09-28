@@ -10,10 +10,8 @@ package com.jzo2o.statemachine.core;
  * @author itcast
  */
 public interface StatusChangeHandler<T extends StateMachineSnapshot> {
-
     /**
      * 状态变化处理逻辑
-     *
      * @param bizId 业务id
      * @param statusChangeEventEnum 状态变更事件
      * @param bizSnapshot 快照

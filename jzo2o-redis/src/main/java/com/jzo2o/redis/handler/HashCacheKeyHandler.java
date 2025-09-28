@@ -2,9 +2,6 @@ package com.jzo2o.redis.handler;
 
 import java.util.List;
 
-/**
- * @author 86188
- */
 public interface HashCacheKeyHandler {
 
     /**
@@ -14,4 +11,5 @@ public interface HashCacheKeyHandler {
      * @return dataType
      */
     String key(List<Object> params);
+
 }

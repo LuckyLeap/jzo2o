@@ -6,7 +6,6 @@ package com.jzo2o.common.handler;
 public interface ConvertHandler<O, T> {
     /**
      * 特殊对象类型转换
-     *
      * @param originObject 源对象
      * @param targetObject 目标对象
      */

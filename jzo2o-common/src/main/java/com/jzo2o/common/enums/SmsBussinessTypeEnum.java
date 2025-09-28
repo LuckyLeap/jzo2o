@@ -8,5 +8,5 @@ import lombok.Getter;
 public enum SmsBussinessTypeEnum {
     INSTITION_REGISTER(1), INSTITUTION_RESET_PASSWORD(2), SERVE_STAFF_LOGIN(3);
 
-    private int type;
+    private final int type;
 }

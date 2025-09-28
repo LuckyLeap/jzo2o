@@ -2,8 +2,6 @@ package com.jzo2o.common.constants;
 
 /**
  * 通用异常信息，只放系统相关异常信息
- *
- * @author itcast
  */
 public class ErrorInfo {
     public static class Msg {
@@ -36,7 +34,6 @@ public class ErrorInfo {
     }
 
     public static class Code {
-
         /**
          * 未登录
          */

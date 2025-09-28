@@ -9,14 +9,11 @@ import java.util.List;
 
 /**
  * 请求工具
- *
- * @author itcast
  */
 public class RequestUtils {
 
     /**
      * 获取当前线程请求对象
-     *
      * @return 请求对象
      */
     public static HttpServletRequest getRequest() {
@@ -26,7 +23,6 @@ public class RequestUtils {
 
     /**
      * 从header头中获取一个header值
-     *
      * @param headerKey header头
      * @return header值
      */
@@ -37,8 +33,6 @@ public class RequestUtils {
 
     /**
      * 从header头像获取一个header的多个值列表
-     * @param headerKey
-     * @return
      */
     public static List<String> getValuesFromHeader(String headerKey) {
         HttpServletRequest request = getRequest();

@@ -2,11 +2,7 @@ package com.jzo2o.statemachine.persist;
 
 import com.jzo2o.statemachine.core.StatusDefine;
 
-/**
- * @author itcast
- */
 public interface StateMachinePersister {
-
     /**
      * 业务数据状态初始化
      *
@@ -18,7 +14,6 @@ public interface StateMachinePersister {
 
     /**
      * 业务数据状态持久化
-     *
      * @param stateMachineName 状态机名称
      * @param bizId            业务id
      * @param statusDefine     当前状态

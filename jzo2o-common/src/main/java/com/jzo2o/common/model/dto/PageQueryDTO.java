@@ -25,10 +25,9 @@ public class PageQueryDTO {
 
     /**
      * 计算起始条数
-     * @return
      */
     public Long calFrom() {
-        return pageNo.intValue() * pageSize.intValue() * 1L;
+        return (long) pageNo.intValue() * pageSize.intValue();
     }
     @AllArgsConstructor
     @Getter

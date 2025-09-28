@@ -5,8 +5,6 @@ import static java.net.HttpURLConnection.HTTP_FORBIDDEN;
 
 /**
  * 权限校验被拒
- *
- * @author itheima
  */
 public class RequestForbiddenException extends CommonException{
 

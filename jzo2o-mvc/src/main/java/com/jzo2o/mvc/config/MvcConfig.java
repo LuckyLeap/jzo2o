@@ -1,6 +1,5 @@
 package com.jzo2o.mvc.config;
 
-
 import com.jzo2o.mvc.advice.CommonExceptionAdvice;
 import com.jzo2o.mvc.interceptor.UserContextInteceptor;
 import lombok.extern.slf4j.Slf4j;

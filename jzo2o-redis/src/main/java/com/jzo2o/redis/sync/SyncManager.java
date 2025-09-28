@@ -6,7 +6,6 @@ import java.util.concurrent.Executor;
  * 同步程序管理器
  */
 public interface SyncManager {
-
     /**
      * 开始同步，使用默认线程池
      * @param queueName 同步队列名称
@@ -24,6 +23,4 @@ public interface SyncManager {
      * @param dataSyncExecutor 数据同步线程池
      */
     void start(String queueName, int storageType, int mode, Executor dataSyncExecutor);
-
-
 }

@@ -15,9 +15,6 @@ import org.springframework.stereotype.Service;
 import java.io.InputStream;
 import java.util.UUID;
 
-/**
- * @author itcast
- */
 @Slf4j
 @Service
 @ConditionalOnBean(AliOssProperties.class)
@@ -27,7 +24,6 @@ public class AliOssStorageServiceImpl implements StorageService {
 
     /**
      * 文件上传
-     *
      * @param extension   文件拓展名
      * @param inputStream 文件流
      * @return 文件访问路径

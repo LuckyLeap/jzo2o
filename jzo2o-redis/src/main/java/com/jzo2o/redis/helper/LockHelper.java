@@ -9,9 +9,6 @@ import org.springframework.stereotype.Component;
 import javax.annotation.Resource;
 import java.util.concurrent.TimeUnit;
 
-/**
- * @author itcast
- */
 @Component
 @Slf4j
 public class LockHelper {
@@ -61,7 +58,7 @@ public class LockHelper {
             if(lock.tryLock(waitTime, leaseTime, unit)) {
                 return lock;
             }
-        }catch (InterruptedException e) {
+        } catch (InterruptedException ignored) {
         }
         return null;
     }
@@ -69,8 +66,6 @@ public class LockHelper {
 
     /**
      * 解锁
-     *
-     * @param rLock
      */
     public void unlock(RLock rLock) {
         if(rLock != null && rLock.isLocked()) {
