@@ -60,10 +60,10 @@
         <statemachine-redis.version>1.2.14.RELEASE</statemachine-redis.version>
         <statemachine-core.version>2.5.1</statemachine-core.version>
         <xxl-job.version>2.4.0</xxl-job.version>
-        <knife4j-gateway.version>4.3.0</knife4j-gateway.version>
+        <knife4j-gateway.version>4.1.0</knife4j-gateway.version>
         <seata-version>1.5.2</seata-version>
         <antlr.verison>4.7.2</antlr.verison>
-        <easyexcel.verison>3.2.0</easyexcel.verison>
+        <easyexcel.verison>3.1.5</easyexcel.verison>
         <sentinel.version>1.8.5</sentinel.version>
     </properties>
 
@@ -154,7 +154,7 @@
             </dependency>
             <dependency>
                 <groupId>com.github.xiaoymin</groupId>
-                <artifactId>knife4j-gateway-spring-boot-starter</artifactId>
+                <artifactId>knife4j-gateway-spring-webflux-starter</artifactId>
                 <version>${knife4j-gateway.version}</version>
             </dependency>
             <dependency>
@@ -220,6 +220,18 @@
             </dependency>
 
             <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-core</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-annotations</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
+
+            <dependency>
                 <groupId>jakarta.json</groupId>
                 <artifactId>jakarta.json-api</artifactId>
                 <version>${jakarta.json-ai.version}</version>
@@ -246,7 +258,7 @@
             </dependency>
             <dependency>
                 <groupId>org.apache.shardingsphere</groupId>
-                <artifactId>shardingsphere-cluster-mode-repository-nacos</artifactId>
+                <artifactId>shardingsphere-cluster-mode-repository-api</artifactId>
                 <version>${shardingsphere-jdbc.version}</version>
             </dependency>
             <dependency>
@@ -256,11 +268,6 @@
             </dependency>
 
             <!-- 状态机相关依赖  -->
-            <dependency>
-                <groupId>org.springframework.statemachine</groupId>
-                <artifactId>spring-statemachine-redis</artifactId>
-                <version>${statemachine-redis.version}</version>
-            </dependency>
             <dependency>
                 <groupId>org.springframework.statemachine</groupId>
                 <artifactId>spring-statemachine-core</artifactId>
@@ -357,16 +364,16 @@
                 <artifactId>jzo2o-statemachine</artifactId>
                 <version>${jzo2o.version}</version>
             </dependency>
-            <dependency>
-                <groupId>com.jzo2o</groupId>
-                <artifactId>jzo2o-orders-base</artifactId>
-                <version>${jzo2o.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.jzo2o</groupId>
-                <artifactId>jzo2o-knife4j-gateway</artifactId>
-                <version>${jzo2o.version}</version>
-            </dependency>
+<!--            <dependency>-->
+<!--                <groupId>com.jzo2o</groupId>-->
+<!--                <artifactId>jzo2o-orders-base</artifactId>-->
+<!--                <version>${jzo2o.version}</version>-->
+<!--            </dependency>-->
+<!--            <dependency>-->
+<!--                <groupId>com.jzo2o</groupId>-->
+<!--                <artifactId>jzo2o-knife4j-gateway</artifactId>-->
+<!--                <version>${jzo2o.version}</version>-->
+<!--            </dependency>-->
             <dependency>
                 <groupId>com.jzo2o</groupId>
                 <artifactId>jzo2o-seata</artifactId>
@@ -385,7 +392,7 @@
 
             <dependency>
                 <groupId>org.antlr</groupId>
-                <artifactId>antlr</artifactId>
+                <artifactId> antlr4-runtime</artifactId>
                 <version>${antlr.verison}</version>
             </dependency>
             <dependency>

@@ -7,11 +7,13 @@ import com.jzo2o.foundations.model.domain.Operator;
 import com.jzo2o.foundations.model.dto.request.LoginReqDTO;
 import com.jzo2o.foundations.service.ILoginService;
 import com.jzo2o.foundations.service.IOperatorService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 
+@Slf4j
 @Service
 public class LoginServiceImpl implements ILoginService {
     @Resource
@@ -23,21 +25,28 @@ public class LoginServiceImpl implements ILoginService {
 
     /**
      * 运营员登录
-     *
      * @param loginReqDTO 运营人员登录请求模型
      * @return token
      */
     @Override
     public String login(LoginReqDTO loginReqDTO) {
-
-        Operator operator = operatorService.findByUsername(loginReqDTO.getUsername());
-        if (operator == null) {
-            throw new RequestForbiddenException("账号或密码错误，请重新输入");
+        try {
+            Operator operator = operatorService.findByUsername(loginReqDTO.getUsername());
+            if (operator == null) {
+                log.warn("用户不存在，username: {}", loginReqDTO.getUsername());
+                throw new RequestForbiddenException("账号或密码错误，请重新输入");
+            }
+            // 比对密码
+            if (!passwordEncoder.matches(loginReqDTO.getPassword(), operator.getPassword())) {
+                log.warn("密码错误，username: {}", loginReqDTO.getUsername());
+                throw new RequestForbiddenException("账号或密码错误，请重新输入");
+            }
+            return jwtTool.createToken(operator.getId(), operator.getName(), operator.getAvatar(), UserType.OPERATION);
+        } catch (RequestForbiddenException e) {
+            throw e;
+        } catch (Exception e) {
+            log.error("登录失败，可能为数据库查询异常，username: {}, error: {}", loginReqDTO.getUsername(), e.getMessage(), e);
+            throw new RequestForbiddenException("系统繁忙，请稍后再试");
         }
-        // 比对密码
-        if (!passwordEncoder.matches(loginReqDTO.getPassword(), operator.getPassword())) {
-            throw new RequestForbiddenException("账号或密码错误，请重新输入");
-        }
-        return jwtTool.createToken(operator.getId(), operator.getName(), operator.getAvatar(), UserType.OPERATION);
     }
 }

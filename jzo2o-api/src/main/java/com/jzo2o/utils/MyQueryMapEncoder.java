@@ -2,6 +2,7 @@ package com.jzo2o.utils;
 
 import cn.hutool.core.date.DatePattern;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
@@ -9,6 +10,7 @@ import feign.QueryMapEncoder;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -21,7 +23,7 @@ public class MyQueryMapEncoder implements QueryMapEncoder {
     public Map encode(Object o) {
         try {
             String s = objectMapper.writeValueAsString(o);
-            return objectMapper.readValue(s, Map.class);
+            return objectMapper.readValue(s, new TypeReference<HashMap<String, Object>>() {});
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }

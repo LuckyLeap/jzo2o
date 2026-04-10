@@ -4,7 +4,9 @@ import com.jzo2o.common.model.dto.PageQueryDTO;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 @ApiModel("用户分页查询请求")
 public class CommonUserPageQueryReqDTO extends PageQueryDTO {

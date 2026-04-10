@@ -67,14 +67,16 @@ public class HashCacheClearAspect {
         // 4.批量清理缓存
         if ( hashCacheClear.batchFieldIdsIndex() > -1) {
             // 4.1.批量清理缓存
-            // 4.1.1.获取objectIds所在的入参data
+            // 4.1.1.获取 objectIds 所在的入参 data
             Object data = args[hashCacheClear.batchFieldIdsIndex()];
             // 4.1.2.入参为空不能清理缓存，直接返回
             if (data == null) {
                 return executeResult;
             }
             // 4.1.3.批量删除
-            cacheHelper.batchRemove(key, (List<Object>) data);
+            if (data instanceof List) {
+                cacheHelper.batchRemove(key, (List<Object>) data);
+            }
 
         } else if (StringUtils.isNotEmpty(hashCacheClear.fieldId())) {
             // 4.2.删除单个缓存

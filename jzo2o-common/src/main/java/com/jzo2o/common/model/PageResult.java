@@ -38,7 +38,7 @@ public class PageResult<T> {
      * 数据列表
      */
     @ApiModelProperty(value = "数据列表", required = true)
-    private List<T> list = Collections.EMPTY_LIST;
+    private List<T> list = Collections.emptyList();
 
     /**
      * 返回一个分页对象实例
@@ -69,21 +69,21 @@ public class PageResult<T> {
      * @return 目标分页数据对象
      */
     public static <O, T> PageResult<T> of(PageResult<O> origin, Class<T> clazz, ConvertHandler<O, T> convertHandler) {
-        //断言目标转换类型不为null
+        //断言目标转换类型不为 null
         if (null == clazz) {
-            throw new CommonException("目标转换类型不能为null!");
+            throw new CommonException("目标转换类型不能为 null!");
         }
 
-        //复制除items外的属性
+        //复制除 items 外的属性
         PageResult<T> target = PageResult.getInstance();
         BeanUtils.copyProperties(origin, target, "items");
 
-        //items为空，直接返回
+        //items 为空，直接返回
         if (CollUtil.isEmpty(origin.getList())) {
             return target;
         }
 
-        //对items进行类型转换
+        //对 items 进行类型转换
         List<T> targetList = BeanUtils.copyToList(origin.getList(), clazz, convertHandler);
         target.setList(targetList);
 

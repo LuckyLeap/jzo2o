@@ -5,7 +5,7 @@ server:
     accesslog:
       enabled: true
       pattern: "%t %a &quot;%r&quot; %s (%D ms)"
-      dir: /data/logs/undertow/${spring.application.name}/access-logs/
+      dir: D:/software/log/undertow/${spring.application.name}/access-logs/
   servlet:
     context-path: /foundations
 

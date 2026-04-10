@@ -4,10 +4,12 @@ import com.jzo2o.common.model.dto.PageQueryDTO;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * 服务项分页查询类
  **/
+@EqualsAndHashCode(callSuper = true)
 @Data
 @ApiModel("服务项分页查询类")
 public class ServeItemPageQueryReqDTO extends PageQueryDTO {
