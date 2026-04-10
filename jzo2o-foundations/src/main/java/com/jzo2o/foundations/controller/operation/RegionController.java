@@ -7,6 +7,7 @@ import com.jzo2o.foundations.model.domain.Region;
 import com.jzo2o.foundations.model.dto.request.RegionPageQueryReqDTO;
 import com.jzo2o.foundations.model.dto.request.RegionUpsertReqDTO;
 import com.jzo2o.foundations.model.dto.response.RegionResDTO;
+import com.jzo2o.foundations.service.HomeService;
 import com.jzo2o.foundations.service.IRegionService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -29,6 +30,9 @@ import java.util.List;
 public class RegionController {
     @Resource
     private IRegionService regionService;
+
+    @Resource
+    private HomeService homeService;
 
     @GetMapping("/activeRegionList")
     @ApiOperation("已开通服务区域列表")
@@ -102,6 +106,8 @@ public class RegionController {
     @ApiOperation("刷新区域相关缓存")
     public void refreshRegionRelateCaches(@PathVariable("id") Long id) {
         //todo
-        //homeService.refreshRegionRelateCaches(id);
+        homeService.queryServeIconCategoryByRegionIdCache(id);
+        homeService.queryHotServeListByRegionIdCache(id);
+        homeService.queryServeTypeListByRegionIdCache(id);
     }
 }

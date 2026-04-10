@@ -19,11 +19,11 @@ import com.jzo2o.foundations.model.domain.Region;
 import com.jzo2o.foundations.model.dto.request.RegionPageQueryReqDTO;
 import com.jzo2o.foundations.model.dto.request.RegionUpsertReqDTO;
 import com.jzo2o.foundations.model.dto.response.RegionResDTO;
+import com.jzo2o.foundations.service.HomeService;
 import com.jzo2o.foundations.service.IConfigRegionService;
 import com.jzo2o.foundations.service.IRegionService;
 import com.jzo2o.foundations.service.IServeService;
 import com.jzo2o.mysql.utils.PageUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.Caching;
@@ -44,6 +44,8 @@ public class RegionServiceImpl extends ServiceImpl<RegionMapper, Region> impleme
     private CityDirectoryMapper cityDirectoryMapper;
     @Resource
     private IServeService serveService;
+    @Resource
+    private HomeService homeService;
 
     /**
      * 区域新增
@@ -166,7 +168,9 @@ public class RegionServiceImpl extends ServiceImpl<RegionMapper, Region> impleme
         update(updateWrapper);
 
         //3.如果是启用操作，刷新缓存：启用区域列表、首页图标、热门服务、服务类型
-        //TODO
+        homeService.queryServeIconCategoryByRegionIdCache(id);
+        homeService.queryHotServeListByRegionIdCache(id);
+        homeService.queryServeTypeListByRegionIdCache(id);
     }
 
     /**

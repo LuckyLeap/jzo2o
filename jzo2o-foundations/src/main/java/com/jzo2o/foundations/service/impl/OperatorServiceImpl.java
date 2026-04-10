@@ -1,5 +1,6 @@
 package com.jzo2o.foundations.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.jzo2o.common.enums.EnableStatusEnum;
 import com.jzo2o.common.expcetions.BadRequestException;
@@ -8,14 +9,13 @@ import com.jzo2o.foundations.mapper.OperatorMapper;
 import com.jzo2o.foundations.model.domain.Operator;
 import com.jzo2o.foundations.model.dto.OperatorAddDTO;
 import com.jzo2o.foundations.service.IOperatorService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 
-/**
- * 运营人员 服务实现类
- */
+@Slf4j
 @Service
 public class OperatorServiceImpl extends ServiceImpl<OperatorMapper, Operator> implements IOperatorService {
 
@@ -24,24 +24,28 @@ public class OperatorServiceImpl extends ServiceImpl<OperatorMapper, Operator> i
 
     /**
      * 根据名称查询运营人员
-     *
      * @param username 名称
      * @return 运营人员
      */
     @Override
     public Operator findByUsername(String username) {
-        return lambdaQuery().eq(Operator::getUsername, username).one();
+        try {
+            return getOne(new LambdaQueryWrapper<Operator>()
+                    .eq(Operator::getUsername, username));
+        } catch (Exception e) {
+            log.error("根据用户名查询运营人员失败，username: {}, error: {}", username, e.getMessage(), e);
+            throw e;
+        }
     }
 
     /**
      * 新增运营人员
-     *
      * @param operatorAddDTO 运营人员新增模型
      */
     @Override
     public void add(OperatorAddDTO operatorAddDTO) {
-        int operatorNumExists = Math.toIntExact(lambdaQuery().eq(Operator::getUsername, operatorAddDTO.getUsername())
-                .count());
+        int operatorNumExists = Math.toIntExact(count(new LambdaQueryWrapper<Operator>()
+                .eq(Operator::getUsername, operatorAddDTO.getUsername())));
         if (operatorNumExists > 0) {
             throw new BadRequestException("账号已经存在，请勿重复添加");
         }

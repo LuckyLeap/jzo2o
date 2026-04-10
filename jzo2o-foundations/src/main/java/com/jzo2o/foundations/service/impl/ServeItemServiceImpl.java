@@ -27,6 +27,7 @@ import com.jzo2o.foundations.service.IServeSyncService;
 import com.jzo2o.mysql.utils.PageHelperUtils;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -79,7 +80,7 @@ public class ServeItemServiceImpl extends ServiceImpl<ServeItemMapper, ServeItem
         serveItem.setId(id);
         baseMapper.updateById(serveItem);
 
-        //2.同步数据到es
+        //2.同步数据到es[修改serve_sync表的记录]
         ServeSyncUpdateReqDTO serveSyncUpdateReqDTO = BeanUtil.toBean(serveItemUpsertReqDTO, ServeSyncUpdateReqDTO.class);
         serveSyncUpdateReqDTO.setServeItemName(serveItemUpsertReqDTO.getName());
         serveSyncUpdateReqDTO.setServeItemImg(serveItemUpsertReqDTO.getImg());
@@ -93,7 +94,6 @@ public class ServeItemServiceImpl extends ServiceImpl<ServeItemMapper, ServeItem
 
     /**
      * 启用服务项
-     *
      * @param id 服务项id
      */
     @Override
@@ -239,5 +239,24 @@ public class ServeItemServiceImpl extends ServiceImpl<ServeItemMapper, ServeItem
     @Override
     public List<ServeTypeCategoryResDTO> queryActiveServeItemCategory() {
         return baseMapper.queryActiveServeItemCategory();
+    }
+
+    /**
+     * 根据ID查询服务项并缓存
+     *
+     * @param id 服务项ID
+     */
+    @Cacheable(value = RedisConstants.CacheName.SERVE_ITEM, key = "#id", cacheManager = RedisConstants.CacheManager.ONE_DAY)
+    public void queryCacheById(Long id) {
+        baseMapper.selectById(id);
+    }
+
+    /**
+     * 删除服务项缓存
+     * @param id 服务项ID
+     */
+    @CacheEvict(value = RedisConstants.CacheName.SERVE_ITEM, key = "#id")
+    public void evictServeItemCache(Long id) {
+        // 仅用于清除缓存
     }
 }

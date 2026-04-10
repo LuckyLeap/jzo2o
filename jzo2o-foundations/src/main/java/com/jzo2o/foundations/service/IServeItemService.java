@@ -31,7 +31,6 @@ public interface IServeItemService extends IService<ServeItem> {
 
     /**
      * 启用服务项
-     *
      * @param id 服务项id
      */
     void activate(Long id);
@@ -81,4 +80,17 @@ public interface IServeItemService extends IService<ServeItem> {
      * @return 服务项目录
      */
     List<ServeTypeCategoryResDTO> queryActiveServeItemCategory();
+
+    /**
+     * 根据id查询服务项缓存
+     *
+     * @param id 服务项id
+     */
+    void queryCacheById(Long id);
+
+    /**
+     * 删除服务项缓存
+     * @param id 服务项id
+     */
+    void evictServeItemCache(Long id);
 }

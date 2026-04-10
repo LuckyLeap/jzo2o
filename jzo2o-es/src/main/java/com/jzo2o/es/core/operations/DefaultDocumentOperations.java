@@ -21,7 +21,6 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -74,9 +73,9 @@ public class DefaultDocumentOperations implements DocumentOperations {
         if (CollUtils.isEmpty(documents)) {
             return false;
         }
-        List<String> ids = documents.stream().map(document -> getId(document)).collect(Collectors.toList());
-        List<?> documentInEs = this.findByIds(index, ids, Arrays.asList(FieldConstants.ID), documents.get(0).getClass());
-        List<String> idsInEs = CollUtils.isEmpty(documentInEs) ? new ArrayList<>() : documentInEs.stream().map(document -> getId(document)).collect(Collectors.toList());
+        List<String> ids = documents.stream().map(this::getId).collect(Collectors.toList());
+        List<?> documentInEs = this.findByIds(index, ids, List.of(FieldConstants.ID), documents.get(0).getClass());
+        List<String> idsInEs = CollUtils.isEmpty(documentInEs) ? new ArrayList<>() : documentInEs.stream().map(this::getId).toList();
 
         BulkRequest.Builder builder = new BulkRequest.Builder();
         for (T document : documents) {

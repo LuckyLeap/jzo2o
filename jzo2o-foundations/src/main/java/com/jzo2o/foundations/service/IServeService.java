@@ -15,6 +15,13 @@ import java.util.List;
  */
 public interface IServeService extends IService<Serve> {
     /**
+     * 查询区域服务信息并进行缓存
+     * @param id 对应serve表的主键
+     * @return 区域服务信息
+     */
+    Serve queryServeByIdCache(Long id);
+
+    /**
      * 分页查询服务列表
      * @param servePageQueryReqDTO 查询条件
      * @return 分页结果
@@ -37,10 +44,9 @@ public interface IServeService extends IService<Serve> {
 
     /**
      * 上架
-     *
      * @param id 服务id
      */
-    void onSale(Long id);
+    Serve onSale(Long id);
 
     /**
      * 删除
@@ -52,7 +58,7 @@ public interface IServeService extends IService<Serve> {
      * 下架
      * @param id 服务id
      */
-    void offSale(Long id);
+    Serve offSale(Long id);
 
     /**
      * 添加热门服务

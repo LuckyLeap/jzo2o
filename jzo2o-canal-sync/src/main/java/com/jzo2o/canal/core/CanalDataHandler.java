@@ -13,4 +13,5 @@ public interface CanalDataHandler<T> {
      * 批量删除
      */
     void batchDelete(List<Long> ids);
+
 }

@@ -26,11 +26,14 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Primary;
 
-import javax.annotation.Resource;
 import java.nio.charset.Charset;
 
 @Configuration
 @ConditionalOnProperty(prefix = "rabbit-mq", name = "enable", havingValue = "true")
+/*
+  触发条件：当配置文件（如 application.yml）中 rabbit-mq.enable=true 时
+  作用：只有满足条件时，才会加载当前的 RabbitMQ 配置类
+ */
 @Import({RabbitClient.class, FailMsgDaoImpl.class})
 @EnableConfigurationProperties({RabbitmqProperties.class})
 @Slf4j
@@ -53,9 +56,9 @@ public class RabbitMqConfiguration implements ApplicationContextAware {
     public RabbitMqResender rabbitMqResender(RabbitTemplate rabbitTemplate, RabbitmqProperties rabbitmqProperties) {
         return new RabbitMqResender(rabbitTemplate, rabbitmqProperties);
     }
+
     /**
      * 自定义mq消费者并发连接
-     *
      * @param configurer        configurer
      * @param connectionFactory connectionFactory
      * @return factory
@@ -93,23 +96,20 @@ public class RabbitMqConfiguration implements ApplicationContextAware {
         RabbitTemplate rabbitTemplate = applicationContext.getBean(RabbitTemplate.class);
         //定义returnCallback回调方法
         rabbitTemplate.setReturnsCallback(
-                new RabbitTemplate.ReturnsCallback() {
-                    @Override
-                    public void returnedMessage(ReturnedMessage returnedMessage) {
-                        byte[] body = returnedMessage.getMessage().getBody();
-                        //消息id
-                        String messageId = returnedMessage.getMessage().getMessageProperties().getMessageId();
-                        String content = new String(body, Charset.defaultCharset());
-                        log.info("消息发送失败，应答码{}，原因{}，交换机{}，路由键{},消息id{},消息内容{}",
-                                returnedMessage.getReplyCode(),
-                                returnedMessage.getReplyText(),
-                                returnedMessage.getExchange(),
-                                returnedMessage.getRoutingKey(),
-                                messageId,
-                                content);
-                        if (failMsgDao != null) {
-                            failMsgDao.save(NumberUtils.parseLong(messageId), returnedMessage.getExchange(), returnedMessage.getRoutingKey(), content, null, DateUtils.getCurrentTime(), "returnCallback");
-                        }
+                returnedMessage -> {
+                    byte[] body = returnedMessage.getMessage().getBody();
+                    //消息id
+                    String messageId = returnedMessage.getMessage().getMessageProperties().getMessageId();
+                    String content = new String(body, Charset.defaultCharset());
+                    log.info("消息发送失败，应答码{}，原因{}，交换机{}，路由键{},消息id{},消息内容{}",
+                            returnedMessage.getReplyCode(),
+                            returnedMessage.getReplyText(),
+                            returnedMessage.getExchange(),
+                            returnedMessage.getRoutingKey(),
+                            messageId,
+                            content);
+                    if (failMsgDao != null) {
+                        failMsgDao.save(NumberUtils.parseLong(messageId), returnedMessage.getExchange(), returnedMessage.getRoutingKey(), content, null, DateUtils.getCurrentTime(), "returnCallback");
                     }
                 }
         );

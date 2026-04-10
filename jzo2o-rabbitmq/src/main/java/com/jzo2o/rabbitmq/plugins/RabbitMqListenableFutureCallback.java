@@ -5,6 +5,7 @@ import com.jzo2o.common.utils.DateUtils;
 import com.jzo2o.rabbitmq.dao.FailMsgDao;
 import lombok.Builder;
 import org.springframework.amqp.rabbit.connection.CorrelationData;
+import org.springframework.lang.NonNull;
 import org.springframework.util.concurrent.ListenableFutureCallback;
 
 @Builder
@@ -20,10 +21,10 @@ public class RabbitMqListenableFutureCallback implements ListenableFutureCallbac
     private Integer delay;
 
     //是否是失败消息
-    private boolean isFailMsg=false;
+    private boolean isFailMsg = false;
 
     @Override
-    public void onFailure(Throwable ex) {
+    public void onFailure(@NonNull Throwable ex) {
         if(failMsgDao == null) {
             return;
         }

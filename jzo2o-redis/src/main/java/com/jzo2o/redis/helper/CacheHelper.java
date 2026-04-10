@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -73,7 +72,7 @@ public class CacheHelper {
         // 1.2.redis key
         String redisKey = CACHE_PREFIX + dataType;
         // 1.3.获取缓存
-        List<T> list = redisTemplate.opsForHash().multiGet(redisKey, objectIds);
+        List list = redisTemplate.opsForHash().multiGet(redisKey, objectIds);
 
         // 2.缓存未得数据获取
         // 2.1.获取未缓存数据的objectIds序号列表

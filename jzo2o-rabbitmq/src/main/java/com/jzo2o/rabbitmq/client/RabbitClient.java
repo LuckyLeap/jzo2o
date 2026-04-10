@@ -34,6 +34,7 @@ public class RabbitClient {
 
     @Resource
     private RabbitTemplate rabbitTemplate;
+
     @Autowired(required = false)
     private FailMsgDao failMsgDao;
 
@@ -91,7 +92,7 @@ public class RabbitClient {
             // 2.发送消息
             this.rabbitTemplate.convertAndSend(exchange, routingKey, message, new DelayMessagePostProcessor(delay), correlationData);
         } catch (Exception e) {
-            log.error("send error:" + e);
+            log.error("send error:{}", String.valueOf(e));
             // 3.构建异常回调，并抛出异常
             MqException mqException = new MqException();
             mqException.setMsg(ExceptionUtil.getMessage(e));

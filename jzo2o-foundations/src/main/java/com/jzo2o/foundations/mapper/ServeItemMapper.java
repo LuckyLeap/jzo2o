@@ -20,9 +20,10 @@ public interface ServeItemMapper extends BaseMapper<ServeItem> {
      * @param id 服务项id
      * @return 服务类型
      */
-    @Select("SELECT type.*  FROM serve_type AS type \n" +
-            "LEFT JOIN serve_item AS item ON type.id = item.serve_type_id \n" +
-            "WHERE item.id = #{id}")
+    @Select("""
+            SELECT type.*  FROM serve_type AS type\s
+            LEFT JOIN serve_item AS item ON type.id = item.serve_type_id\s
+            WHERE item.id = #{id}""")
     ServeType findServeTypeById(@Param("id") Long id);
 
     /**

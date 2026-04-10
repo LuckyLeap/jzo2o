@@ -14,6 +14,7 @@ import com.jzo2o.common.expcetions.ForbiddenOperationException;
 import com.jzo2o.common.model.PageResult;
 import com.jzo2o.foundations.enums.FoundationStatusEnum;
 import com.jzo2o.foundations.mapper.ServeTypeMapper;
+import com.jzo2o.foundations.model.domain.ServeItem;
 import com.jzo2o.foundations.model.domain.ServeType;
 import com.jzo2o.foundations.model.dto.request.ServeSyncUpdateReqDTO;
 import com.jzo2o.foundations.model.dto.request.ServeTypePageQueryReqDTO;
@@ -102,6 +103,16 @@ public class ServeTypeServiceImpl extends ServiceImpl<ServeTypeMapper, ServeType
                 .eq(ServeType::getId, id)
                 .set(ServeType::getActiveStatus, FoundationStatusEnum.ENABLE.getStatus());
         update(updateWrapper);
+
+        //查询该服务类型下的所有服务项，逐个触发缓存添加
+        List<ServeItem> serveItems = serveItemService.lambdaQuery()
+                .eq(ServeItem::getServeTypeId, id)
+                .list();
+        
+        serveItems.forEach(serveItem -> {
+            // 触发服务项缓存
+            serveItemService.queryCacheById(serveItem.getId());
+        });
     }
 
     /**
@@ -132,6 +143,16 @@ public class ServeTypeServiceImpl extends ServiceImpl<ServeTypeMapper, ServeType
                 .eq(ServeType::getId, id)
                 .set(ServeType::getActiveStatus, FoundationStatusEnum.DISABLE.getStatus());
         update(updateWrapper);
+
+        //查询该服务类型下的所有服务项，逐个删除缓存
+        List<ServeItem> serveItems = serveItemService.lambdaQuery()
+                .eq(ServeItem::getServeTypeId, id)
+                .list();
+        
+        serveItems.forEach(serveItem -> {
+            // 删除服务项缓存
+            serveItemService.evictServeItemCache(serveItem.getId());
+        });
     }
 
     /**

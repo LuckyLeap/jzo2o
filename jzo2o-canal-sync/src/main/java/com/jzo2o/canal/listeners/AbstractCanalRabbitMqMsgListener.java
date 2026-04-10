@@ -13,13 +13,14 @@ import org.springframework.amqp.core.Message;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
+/**
+ * 服务信息同步程序（Canal）
+ **/
 public abstract class AbstractCanalRabbitMqMsgListener<T> implements CanalDataHandler<T> {
     public void parseMsg(Message message) throws Exception {
         try {

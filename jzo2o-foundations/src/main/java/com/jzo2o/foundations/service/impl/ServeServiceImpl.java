@@ -2,24 +2,25 @@ package com.jzo2o.foundations.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.ObjectUtil;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.jzo2o.api.foundations.dto.response.ServeItemResDTO;
 import com.jzo2o.common.expcetions.CommonException;
 import com.jzo2o.common.expcetions.ForbiddenOperationException;
 import com.jzo2o.common.model.PageResult;
+import com.jzo2o.foundations.constants.RedisConstants;
 import com.jzo2o.foundations.enums.FoundationStatusEnum;
-import com.jzo2o.foundations.mapper.RegionMapper;
-import com.jzo2o.foundations.mapper.ServeItemMapper;
-import com.jzo2o.foundations.mapper.ServeMapper;
-import com.jzo2o.foundations.model.domain.Region;
-import com.jzo2o.foundations.model.domain.Serve;
-import com.jzo2o.foundations.model.domain.ServeItem;
+import com.jzo2o.foundations.mapper.*;
+import com.jzo2o.foundations.model.domain.*;
 import com.jzo2o.foundations.model.dto.request.ServePageQueryReqDTO;
 import com.jzo2o.foundations.model.dto.request.ServeUpsertReqDTO;
 import com.jzo2o.foundations.model.dto.response.ServeResDTO;
 import com.jzo2o.foundations.service.IServeService;
 import com.jzo2o.mysql.utils.PageHelperUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -39,6 +40,23 @@ public class ServeServiceImpl extends ServiceImpl<ServeMapper, Serve> implements
 
     @Autowired
     private RegionMapper regionMapper;
+
+    @Autowired
+    private ServeTypeMapper serveTypeMapper;
+
+    @Autowired
+    private ServeSyncMapper serveSyncMapper;
+
+    /**
+     * 查询区域服务信息并进行缓存
+     * @param id 对应serve表的主键
+     * @return 区域服务信息
+     */
+    //    @Cacheable(value = "JZ_CACHE:SERVE_RECORD",key = "#id")
+    @Cacheable(value = RedisConstants.CacheName.SERVE, key = "#id", cacheManager = RedisConstants.CacheManager.ONE_DAY)
+    public Serve queryServeByIdCache(Long id) {
+        return getById(id);
+    }
 
     /**
      * 分页查询
@@ -125,53 +143,68 @@ public class ServeServiceImpl extends ServiceImpl<ServeMapper, Serve> implements
     }
 
     @Override
+    @CachePut(value = RedisConstants.CacheName.SERVE, key = "#id",  cacheManager = RedisConstants.CacheManager.ONE_DAY)
     @Transactional
-    public void onSale(Long id) {
+    public Serve onSale(Long id){
         Serve serve = baseMapper.selectById(id);
-        if (ObjectUtil.isNull(serve)) {
+        if(ObjectUtil.isNull(serve)){
             throw new ForbiddenOperationException("区域服务不存在");
         }
-        // 上架状态
+        //上架状态
         Integer saleStatus = serve.getSaleStatus();
-        // 草稿或下架状态方可上架
-        if (!(saleStatus == FoundationStatusEnum.INIT.getStatus() || saleStatus == FoundationStatusEnum.DISABLE.getStatus())) {
+        //草稿或下架状态方可上架
+        if (!(saleStatus==FoundationStatusEnum.INIT.getStatus() || saleStatus==FoundationStatusEnum.DISABLE.getStatus())) {
             throw new ForbiddenOperationException("草稿或下架状态方可上架");
         }
-
-        // 校验服务项是否为启用状态
-        validateServeItem(serve.getServeItemId());
-
-        // 更新上架状态
-        boolean update = lambdaUpdate()
-                .eq(Serve::getId, id)
-                .set(Serve::getSaleStatus, FoundationStatusEnum.ENABLE.getStatus())
-                .update();
-        if (!update) {
-            throw new CommonException("启动服务失败");
+        //服务项id
+        Long serveItemId = serve.getServeItemId();
+        ServeItem serveItem = serveItemMapper.selectById(serveItemId);
+        if(ObjectUtil.isNull(serveItem)){
+            throw new ForbiddenOperationException("所属服务项不存在");
         }
+        //服务项的启用状态
+        Integer activeStatus = serveItem.getActiveStatus();
+        //服务项为启用状态方可上架
+        if (!(FoundationStatusEnum.ENABLE.getStatus()==activeStatus)) {
+            throw new ForbiddenOperationException("服务项为启用状态方可上架");
+        }
+
+        //更新上架状态
+        LambdaUpdateWrapper<Serve> updateWrapper = Wrappers.<Serve>lambdaUpdate()
+                .eq(Serve::getId, id)
+                .set(Serve::getSaleStatus, FoundationStatusEnum.ENABLE.getStatus());
+        update(updateWrapper);
+
+        //向serve_sync表写记录
+        addServeSync(id);
+
+        return baseMapper.selectById(id);
     }
 
     @Override
+    @CacheEvict(value = RedisConstants.CacheName.SERVE, key = "#id")
     @Transactional
-    public void offSale(Long id) {
+    public Serve offSale(Long id){
         Serve serve = baseMapper.selectById(id);
-        if (ObjectUtil.isNull(serve)) {
+        if(ObjectUtil.isNull(serve)){
             throw new ForbiddenOperationException("区域服务不存在");
         }
-        // 上架状态
+        //上架状态
         Integer saleStatus = serve.getSaleStatus();
-        if (!(saleStatus == FoundationStatusEnum.ENABLE.getStatus())) {
-            throw new ForbiddenOperationException("售卖状态为草稿/下架，无需操作");
+        //上架状态方可下架
+        if (!(saleStatus==FoundationStatusEnum.ENABLE.getStatus())) {
+            throw new ForbiddenOperationException("上架状态方可下架");
         }
-
-        // 更新下架状态
-        boolean update = lambdaUpdate()
+        //更新下架状态
+        LambdaUpdateWrapper<Serve> updateWrapper = Wrappers.<Serve>lambdaUpdate()
                 .eq(Serve::getId, id)
-                .set(Serve::getSaleStatus, FoundationStatusEnum.DISABLE.getStatus())
-                .update();
-        if (!update) {
-            throw new CommonException("下架服务失败");
-        }
+                .set(Serve::getSaleStatus, FoundationStatusEnum.DISABLE.getStatus());
+        update(updateWrapper);
+
+        //删除serve_sync表的记录
+        serveSyncMapper.deleteById(id);
+
+        return baseMapper.selectById(id);
     }
 
     @Override
@@ -271,6 +304,7 @@ public class ServeServiceImpl extends ServiceImpl<ServeMapper, Serve> implements
      * 校验服务项是否启用
      * @param serveItemId 服务项ID
      */
+    @SuppressWarnings("DuplicatedCode")
     private void validateServeItem(Long serveItemId) {
         ServeItem serveItem = serveItemMapper.selectById(serveItemId);
         if (ObjectUtil.isNull(serveItem)) {
@@ -282,5 +316,41 @@ public class ServeServiceImpl extends ServiceImpl<ServeMapper, Serve> implements
         if (!(FoundationStatusEnum.ENABLE.getStatus() == activeStatus)) {
             throw new ForbiddenOperationException("服务项为启用状态方可上架");
         }
+    }
+
+    /**
+     * 新增服务同步数据
+     * @param serveId 服务id
+     */
+    private void addServeSync(Long serveId) {
+        //服务信息
+        Serve serve = baseMapper.selectById(serveId);
+        //区域信息
+        Region region = regionMapper.selectById(serve.getRegionId());
+        //服务项信息
+        ServeItem serveItem = serveItemMapper.selectById(serve.getServeItemId());
+        //服务类型
+        ServeType serveType = serveTypeMapper.selectById(serveItem.getServeTypeId());
+
+        ServeSync serveSync = new ServeSync();
+        serveSync.setServeTypeId(serveType.getId());
+        serveSync.setServeTypeName(serveType.getName());
+        serveSync.setServeTypeIcon(serveType.getServeTypeIcon());
+        serveSync.setServeTypeImg(serveType.getImg());
+        serveSync.setServeTypeSortNum(serveType.getSortNum());
+
+        serveSync.setServeItemId(serveItem.getId());
+        serveSync.setServeItemIcon(serveItem.getServeItemIcon());
+        serveSync.setServeItemName(serveItem.getName());
+        serveSync.setServeItemImg(serveItem.getImg());
+        serveSync.setServeItemSortNum(serveItem.getSortNum());
+        serveSync.setUnit(serveItem.getUnit());
+        serveSync.setDetailImg(serveItem.getDetailImg());
+        serveSync.setPrice(serve.getPrice());
+
+        serveSync.setCityCode(region.getCityCode());
+        serveSync.setId(serve.getId());
+        serveSync.setIsHot(serve.getIsHot());
+        serveSyncMapper.insert(serveSync);
     }
 }

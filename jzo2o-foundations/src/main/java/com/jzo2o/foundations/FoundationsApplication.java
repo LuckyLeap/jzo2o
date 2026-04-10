@@ -8,7 +8,7 @@ import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 
 @Slf4j
-@EnableCaching
+@EnableCaching//开启缓存注解功能
 @MapperScan("com.jzo2o.foundations.mapper")
 @SpringBootApplication
 @EnableAspectJAutoProxy
