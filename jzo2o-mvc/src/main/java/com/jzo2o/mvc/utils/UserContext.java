@@ -16,6 +16,10 @@ public class UserContext {
         return THREAD_LOCAL_USER.get().getId();
     }
 
+    /**
+     * 获取当前用户信息
+     * @return 当前用户信息
+     */
     public static CurrentUserInfo currentUser() {
         return THREAD_LOCAL_USER.get();
     }

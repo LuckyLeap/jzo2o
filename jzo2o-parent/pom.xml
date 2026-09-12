@@ -5,21 +5,23 @@
     <packaging>pom</packaging>
     <modules>
         <module>../jzo2o-api</module>
-        <module>../jzo2o-common</module>
-        <module>../jzo2o-mysql</module>
-        <module>../jzo2o-knife4j-web</module>
-        <module>../jzo2o-xxl-job</module>
-        <module>../jzo2o-mvc</module>
-        <module>../jzo2o-redis</module>
-        <module>../jzo2o-thirdparty</module>
-        <module>../jzo2o-es</module>
-        <module>../jzo2o-rabbitmq</module>
-        <module>../jzo2o-statemachine</module>
-        <module>../jzo2o-shardingsphere-jdbc</module>
         <module>../jzo2o-canal-sync</module>
+        <module>../jzo2o-common</module>
+        <module>../jzo2o-customer</module>
+        <module>../jzo2o-es</module>
+        <module>../jzo2o-foundations</module>
+        <module>../jzo2o-knife4j-web</module>
+        <module>../jzo2o-mvc</module>
+        <module>../jzo2o-mysql</module>
+        <module>../jzo2o-orders</module>
+        <module>../jzo2o-rabbitmq</module>
+        <module>../jzo2o-redis</module>
         <module>../jzo2o-seata</module>
         <module>../jzo2o-sentinel</module>
-        <module>../jzo2o-foundations</module>
+        <module>../jzo2o-shardingsphere-jdbc</module>
+        <module>../jzo2o-statemachine</module>
+        <module>../jzo2o-thirdparty</module>
+        <module>../jzo2o-xxl-job</module>
     </modules>
 
     <groupId>com.jzo2o</groupId>
@@ -154,7 +156,7 @@
             </dependency>
             <dependency>
                 <groupId>com.github.xiaoymin</groupId>
-                <artifactId>knife4j-gateway-spring-webflux-starter</artifactId>
+                <artifactId>knife4j-gateway-spring-boot-starter</artifactId>
                 <version>${knife4j-gateway.version}</version>
             </dependency>
             <dependency>
@@ -186,7 +188,7 @@
             </dependency>
             <dependency>
                 <groupId>javax.servlet</groupId>
-                <artifactId>servlet-api</artifactId>
+                <artifactId>javax.servlet-api</artifactId>
                 <version>${servlet-api.version}</version>
             </dependency>
             <dependency>
@@ -311,6 +313,11 @@
             </dependency>
             <dependency>
                 <groupId>com.jzo2o</groupId>
+                <artifactId>jzo2o-customer</artifactId>
+                <version>${jzo2o.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.jzo2o</groupId>
                 <artifactId>jzo2o-knife4j-web</artifactId>
                 <version>${jzo2o.version}</version>
             </dependency>
@@ -364,11 +371,11 @@
                 <artifactId>jzo2o-statemachine</artifactId>
                 <version>${jzo2o.version}</version>
             </dependency>
-<!--            <dependency>-->
-<!--                <groupId>com.jzo2o</groupId>-->
-<!--                <artifactId>jzo2o-orders-base</artifactId>-->
-<!--                <version>${jzo2o.version}</version>-->
-<!--            </dependency>-->
+            <dependency>
+                <groupId>com.jzo2o</groupId>
+                <artifactId>jzo2o-orders-base</artifactId>
+                <version>${jzo2o.version}</version>
+            </dependency>
 <!--            <dependency>-->
 <!--                <groupId>com.jzo2o</groupId>-->
 <!--                <artifactId>jzo2o-knife4j-gateway</artifactId>-->
@@ -392,7 +399,7 @@
 
             <dependency>
                 <groupId>org.antlr</groupId>
-                <artifactId> antlr4-runtime</artifactId>
+                <artifactId>antlr4-runtime</artifactId>
                 <version>${antlr.version}</version>
             </dependency>
             <dependency>

@@ -243,7 +243,6 @@ public class ServeItemServiceImpl extends ServiceImpl<ServeItemMapper, ServeItem
 
     /**
      * 根据ID查询服务项并缓存
-     *
      * @param id 服务项ID
      */
     @Cacheable(value = RedisConstants.CacheName.SERVE_ITEM, key = "#id", cacheManager = RedisConstants.CacheManager.ONE_DAY)
